@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steering Geometry Characterization — Mahindra 265 | Vehicle Dynamics Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #1a1410;
+    --ink-2: #2e2418;
+    --ink-3: #6b5a45;
+    --ink-4: #a8957e;
+    --paper: #faf7f2;
+    --paper-2: #f2ede4;
+    --paper-3: #e8e0d2;
+    --rule: #d8cfc0;
+    --accent: #3d5a2a;
+    --accent-2: #b84c1a;
+    --accent-light: #edf2e8;
+    --gold: #c49a2a;
+    --soil: #6b4423;
+    --wheat: #d4a843;
+    --field: #3d5a2a;
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  /* subtle grain texture on all section backgrounds */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.018;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--paper); color: var(--ink); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(250,247,242,0.97); backdrop-filter: blur(12px); border-bottom: 2px solid var(--wheat); padding: 0 40px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--field); font-weight: 500; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* SECTIONS */
+  section { padding: 100px 0; }
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 40px; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; align-items: center; padding-top: 56px; background: var(--paper); position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: 0; right: 0; width: 55%; height: 100%; background: linear-gradient(135deg, #edf2e8 0%, #e8e0d2 100%); clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%); }
+  .hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; padding: 80px 40px; max-width: 1160px; margin: 0 auto; width: 100%; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .hero-eyebrow span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--soil); font-weight: 500; }
+  .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 2px; background: var(--wheat); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(32px, 4vw, 54px); line-height: 1.1; color: var(--ink); margin-bottom: 24px; letter-spacing: -0.01em; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-desc { font-size: 16px; color: var(--ink-3); line-height: 1.7; max-width: 480px; margin-bottom: 40px; font-weight: 300; }
+  .hero-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); padding: 6px 12px; border: 1px solid var(--wheat); border-radius: 2px; background: rgba(196,154,42,0.05); }
+
+  /* HERO IMAGE */
+  .hero-image-wrap { position: relative; }
+  .hero-img { width: 100%; border-radius: 4px; display: block; aspect-ratio: 4/3; object-fit: cover; box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
+  .hero-img-caption { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); margin-top: 10px; text-align: right; }
+  .hero-img-badge { position: absolute; top: 16px; left: 16px; background: var(--field); color: #fff; font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; padding: 6px 12px; border-radius: 2px; border-bottom: 2px solid var(--wheat); }
+
+  /* METRICS STRIP */
+  .metrics-strip { background: linear-gradient(135deg, #3d5a2a 0%, #2a3d1a 100%); padding: 48px 0; border-top: 4px solid var(--wheat); border-bottom: 4px solid var(--wheat); }
+  .metrics-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; max-width: 1160px; margin: 0 auto; padding: 0 40px; }
+  .metric-card { padding: 24px 20px; border-right: 1px solid rgba(255,255,255,0.12); text-align: center; }
+  .metric-card:last-child { border-right: none; }
+  .metric-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 10px; display: block; }
+  .metric-value { font-family: var(--serif); font-size: 28px; color: #fff; line-height: 1; margin-bottom: 4px; display: block; }
+  .metric-unit { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.4); }
+
+  /* SECTION LABELS */
+  .section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--soil); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); max-width: 60px; }
+  .section-title { font-family: var(--serif); font-size: clamp(28px, 3vw, 42px); line-height: 1.15; color: var(--ink); margin-bottom: 20px; letter-spacing: -0.01em; }
+  .section-body { font-size: 15px; color: var(--ink-3); line-height: 1.75; max-width: 680px; font-weight: 300; }
+
+  /* OVERVIEW */
+  .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px; }
+  .overview-text p { font-size: 15px; color: var(--ink-2); line-height: 1.8; margin-bottom: 20px; font-weight: 300; }
+  .callout-box { background: var(--accent-light); border-left: 4px solid var(--field); padding: 24px 28px; border-radius: 0 4px 4px 0; }
+  .callout-box p { font-size: 14px; color: var(--field); line-height: 1.7; font-weight: 400; }
+
+  /* PHOTO PANEL */
+  .photo-panel { position: relative; border-radius: 4px; overflow: hidden; }
+  .photo-panel img { width: 100%; display: block; object-fit: cover; }
+  .photo-panel .photo-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 32px 20px 16px; }
+  .photo-panel .photo-label span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
+  .photo-caption { font-family: var(--mono); font-size: 10px; color: var(--ink-4); margin-top: 10px; letter-spacing: 0.08em; text-align: center; }
+
+  /* OBJECTIVES */
+  .objectives-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; background: var(--rule); }
+  .obj-card { background: var(--paper); padding: 36px 32px; transition: background 0.2s; }
+  .obj-card:hover { background: var(--accent-light); border-bottom: 2px solid var(--wheat); }
+  .obj-number { font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.15em; margin-bottom: 16px; display: block; }
+  .obj-title { font-family: var(--serif); font-size: 18px; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .obj-desc { font-size: 13px; color: var(--ink-3); line-height: 1.65; font-weight: 300; }
+
+  /* GEOMETRY */
+  .geo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; align-items: start; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-3); padding: 12px 16px; background: var(--paper-3); text-align: left; border-bottom: 2px solid var(--wheat); font-weight: 500; }
+  .data-table td { padding: 14px 16px; font-size: 14px; color: var(--ink-2); border-bottom: 1px solid var(--rule); font-weight: 300; }
+  .data-table td:last-child { font-family: var(--mono); font-size: 13px; color: var(--field); font-weight: 500; }
+  .data-table tr:hover td { background: var(--paper-2); }
+
+  /* IMAGE GRID */
+  .img-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .img-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+  .img-grid-2 img, .img-grid-3 img { width: 100%; border-radius: 4px; display: block; object-fit: cover; border: 1px solid var(--rule); }
+  .img-block { }
+  .img-block img { width: 100%; border-radius: 4px; display: block; object-fit: cover; border: 1px solid var(--rule); }
+
+  /* DIAGRAM PANEL */
+  .diagram-panel { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 4px; padding: 32px; text-align: center; }
+  .diagram-caption { font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: 0.1em; margin-top: 16px; text-transform: uppercase; }
+
+  /* CHART */
+  .chart-container { background: #fff; border: 1px solid var(--rule); border-radius: 4px; padding: 40px; margin-top: 48px; border-top: 3px solid var(--wheat); }
+  .chart-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+  .chart-title { font-family: var(--serif); font-size: 22px; color: var(--ink); }
+  .chart-legend { display: flex; gap: 24px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em; }
+  .legend-dot { width: 24px; height: 3px; border-radius: 2px; }
+  .chart-wrapper { position: relative; height: 400px; }
+
+  /* RESULTS TABLE */
+  .results-section { background: var(--paper-2); }
+  .full-table-wrap { margin-top: 48px; overflow-x: auto; border: 1px solid var(--rule); border-radius: 4px; }
+  .full-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+  .full-table thead tr { background: linear-gradient(90deg, #3d5a2a, #2a3d1a); }
+  .full-table thead th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.8); padding: 16px 20px; text-align: center; font-weight: 500; white-space: nowrap; }
+  .full-table tbody td { padding: 13px 20px; font-size: 13px; text-align: center; border-bottom: 1px solid var(--rule); color: var(--ink-2); font-family: var(--mono); }
+  .full-table tbody tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+  .full-table tbody tr:hover td { background: #edf2e8; }
+  .full-table .highlight { color: var(--accent-2); font-weight: 500; }
+
+  /* FINDINGS */
+  .findings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
+  .finding-card { background: #fff; border: 1px solid var(--rule); border-radius: 4px; padding: 32px; position: relative; overflow: hidden; transition: box-shadow 0.25s, transform 0.25s; }
+  .finding-card:hover { box-shadow: 0 8px 40px rgba(26,58,92,0.08); transform: translateY(-2px); }
+  .finding-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--field); }
+  .finding-card.warn::before { background: var(--gold); }
+  .finding-card.alert::before { background: var(--accent-2); }
+  .finding-icon { width: 40px; height: 40px; background: var(--accent-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 18px; }
+  .finding-card.warn .finding-icon { background: rgba(184,148,42,0.1); }
+  .finding-card.alert .finding-icon { background: rgba(200,57,42,0.1); }
+  .finding-title { font-family: var(--serif); font-size: 18px; margin-bottom: 10px; color: var(--ink); }
+  .finding-value { font-family: var(--mono); font-size: 28px; color: var(--field); font-weight: 500; margin-bottom: 10px; display: block; }
+  .finding-card.warn .finding-value { color: var(--gold); }
+  .finding-card.alert .finding-value { color: var(--accent-2); }
+  .finding-desc { font-size: 13px; color: var(--ink-3); line-height: 1.65; font-weight: 300; }
+
+  /* SKILLS */
+  .skills-wrap { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 48px; }
+  .skill-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px; border: 1px solid var(--field); color: var(--field); border-radius: 2px; cursor: default; transition: background 0.2s, color 0.2s; background: rgba(61,90,42,0.04); }
+  .skill-tag:hover { background: var(--field); color: #fff; }
+
+  /* ERROR */
+  .error-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
+  .error-item { display: flex; gap: 16px; padding: 24px; background: var(--paper-2); border-radius: 4px; border: 1px solid var(--rule); }
+  .error-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .error-title { font-size: 14px; font-weight: 500; color: var(--ink-2); margin-bottom: 6px; }
+  .error-desc { font-size: 13px; color: var(--ink-3); line-height: 1.6; font-weight: 300; }
+
+  /* CONCLUSION */
+  .conclusion-bg { background: linear-gradient(135deg, #2a3d1a 0%, #1a2810 60%, #3a2010 100%); border-top: 4px solid var(--wheat); }
+  .conclusion-bg .section-label { color: rgba(212,168,67,0.7); }
+  .conclusion-bg .section-label::after { background: rgba(212,168,67,0.3); }
+  .conclusion-bg .section-title { color: #fff; }
+  .conclusion-text { font-size: 17px; color: rgba(255,255,255,0.75); line-height: 1.85; max-width: 780px; font-weight: 300; margin-top: 24px; }
+  .conclusion-highlight { color: #fff; font-weight: 400; }
+
+  /* SETUP STEPS */
+  .setup-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; background: var(--rule); }
+  .setup-step { background: var(--paper); padding: 36px 28px; transition: background 0.2s; }
+  .setup-step:hover { background: var(--paper-2); }
+  .step-num { font-family: var(--serif); font-size: 48px; color: var(--paper-3); line-height: 1; margin-bottom: 16px; }
+  .step-title { font-size: 15px; font-weight: 500; color: var(--ink-2); margin-bottom: 10px; }
+  .step-desc { font-size: 13px; color: var(--ink-3); line-height: 1.65; font-weight: 300; }
+
+  /* DISCUSSION */
+  .discussion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+  .disc-item { padding: 28px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 4px; }
+  .disc-title { font-size: 14px; font-weight: 500; color: var(--ink-2); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .disc-title::before { content: ''; display: block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+  .disc-desc { font-size: 13px; color: var(--ink-3); line-height: 1.7; font-weight: 300; }
+
+  /* KPI */
+  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; align-items: center; }
+  .kpi-visual { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 4px; padding: 40px; text-align: center; }
+  .large-stat { margin: 24px 0; }
+  .large-stat-value { font-family: var(--serif); font-size: 64px; color: var(--field); line-height: 1; display: block; }
+  .large-stat-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-4); margin-top: 8px; display: block; }
+  .stat-row { display: flex; justify-content: center; gap: 48px; margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--rule); }
+  .stat-mini-value { font-family: var(--serif); font-size: 32px; color: var(--accent-2); display: block; text-align: center; }
+  .stat-mini-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); display: block; text-align: center; margin-top: 4px; }
+
+  /* DIVIDER */
+  .rule-divider {
+    height: 32px;
+    margin: 60px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: var(--wheat);
+    opacity: 0.5;
+  }
+  .rule-divider::before, .rule-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .rule-divider::before { margin-right: 8px; }
+  .rule-divider::after { margin-left: 8px; }
+
+  /* FOOTER */
+  footer { background: #1a2810; padding: 40px 0; text-align: center; border-top: 3px solid var(--wheat); }
+  footer p { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: rgba(250,247,242,0.98); backdrop-filter: blur(12px); padding: 20px 24px 28px; gap: 20px; border-bottom: 2px solid var(--wheat); z-index: 200; }
+    .hamburger { display: flex; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; padding: 8px; border: none; background: none; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--field); border-radius: 2px; transition: all 0.25s; }
+    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
+    .hero::before { display: none; }
+    .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+    .metric-card:nth-child(3) { border-right: none; }
+    .overview-grid, .geo-grid, .kpi-grid { grid-template-columns: 1fr; gap: 40px; }
+    .objectives-grid, .setup-grid { grid-template-columns: 1fr; }
+    .findings-grid, .error-grid, .discussion-grid { grid-template-columns: 1fr; }
+    .img-grid-2, .img-grid-3 { grid-template-columns: 1fr 1fr; }
+    .container { padding: 0 20px; }
+    section { padding: 64px 0; }
+    /* Mobile: keep images compact — max 55vw for grids */
+    .img-grid-2 img, .img-grid-3 img { max-height: 44vw; }
+    /* Method04 photo grid stays 2x2 but shorter */
+    [style*="grid-template-columns:1fr 1fr"] img { max-height: 42vw; }
+    /* Hero image compact */
+    .hero-img { max-height: 56vw; }
+    /* overview photo panel */
+    .photo-panel img { max-height: 60vw; }
+    /* single img-block images */
+    .img-block img { max-height: 60vw; }
+    /* Method04 block: stack on mobile */
+    .plumb-method-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+    /* Sweep convention: stack */
+    .sweep-convention-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+    /* Metrics on mobile: 2 per row */
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .metric-card:nth-child(2) { border-right: none; }
+    .metric-card:nth-child(4) { border-right: none; }
+    .metric-card:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.12); }
+  }
+  @media (max-width: 480px) {
+    .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
+    .img-grid-2 img, .img-grid-3 img { max-height: none; }
+  }
+
+  /* ── CAD STEPS & INSIGHT — responsive grids ── */
+  /* The CAD step rows use inline grid-template-columns:1fr 1fr — override on mobile */
+  @media (max-width: 768px) {
+    /* All inline 2-col grids inside dark sections collapse to 1 col */
+    #cad-replica .container > div > div[style*="grid-template-columns:1fr 1fr"],
+    #cad-replica .container > div > div[style*="grid-template-columns: 1fr 1fr"],
+    #insight .container > div[style*="grid-template-columns:1fr 1fr"],
+    #insight .container > div[style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+    }
+    /* Insight option cards */
+    #insight > .container > div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+    /* Step 06 video+image side by side */
+    #cad-replica div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+    /* Validation result callout */
+    #cad-replica div[style*="display:flex"][style*="align-items:center"] {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  /* ── GLOBAL IMAGE GRID — always responsive ── */
+  /* Any section with inline 2-col grids: laptop shows 2, mobile shows 1 */
+  @media (max-width: 600px) {
+    [style*="grid-template-columns:1fr 1fr"],
+    [style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+    [style*="grid-template-columns:1fr 1fr 1fr"],
+    [style*="grid-template-columns: repeat(3"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+  }
+
+  /* HAMBURGER — hidden on desktop */
+  .hamburger { display: none; }
+
+  /* LIGHTBOX */
+  .lb-overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,8,0.92); z-index: 9000; align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+  .lb-overlay.active { display: flex; }
+  .lb-inner { position: relative; max-width: min(92vw, 1000px); max-height: 90vh; }
+  .lb-inner img { display: block; max-width: 100%; max-height: 88vh; border-radius: 4px; box-shadow: 0 32px 80px rgba(0,0,0,0.6); object-fit: contain; }
+  .lb-caption { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 14px; text-align: center; }
+  .lb-close { position: absolute; top: -16px; right: -16px; width: 36px; height: 36px; border-radius: 50%; background: var(--wheat); border: none; cursor: pointer; font-size: 18px; color: #1a2810; display: flex; align-items: center; justify-content: center; font-weight: bold; line-height: 1; }
+  .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .lb-nav:hover { background: rgba(255,255,255,0.25); }
+  .lb-prev { left: -56px; }
+  .lb-next { right: -56px; }
+  @media (max-width: 600px) {
+    .lb-prev { left: 4px; }
+    .lb-next { right: 4px; }
+    .lb-close { top: -12px; right: -4px; }
+  }
+
+  /* Clickable images — all images get zoom-in treatment */
+  img[data-lb] { cursor: zoom-in !important; transition: transform 0.22s ease, opacity 0.15s, box-shadow 0.22s; }
+  img[data-lb]:hover { transform: scale(1.025); opacity: 0.93; box-shadow: 0 8px 36px rgba(0,0,0,0.28); }
+
+  /* Zoom icon overlay on hover */
+  .img-zoom-wrap { position: relative; display: inline-block; width: 100%; overflow: hidden; border-radius: 4px; }
+  .img-zoom-wrap::after {
+    content: '⊕';
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,0.55); color: #fff;
+    font-size: 16px; width: 30px; height: 30px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .img-zoom-wrap:hover::after { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">🌾 VD — Case Study 001</span>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#geometry">Geometry</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#cad-replica">CAD</a></li>
+    <li><a href="#insight">Insight</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#findings">Findings</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <!-- Wheat stalk watermark -->
+  <div style="position:absolute; bottom:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; overflow:hidden; opacity:0.04;">
+    <svg viewBox="0 0 200 600" xmlns="http://www.w3.org/2000/svg" style="position:absolute; bottom:0; left:5%; height:80%; width:auto;">
+      <!-- Stalk -->
+      <line x1="100" y1="580" x2="100" y2="50" stroke="#3d5a2a" stroke-width="4"/>
+      <!-- Wheat grains -->
+      <g fill="#3d5a2a">
+        <ellipse cx="100" cy="50" rx="14" ry="28" transform="rotate(-15,100,50)"/>
+        <ellipse cx="100" cy="50" rx="14" ry="28" transform="rotate(15,100,50)"/>
+        <ellipse cx="100" cy="110" rx="12" ry="24" transform="rotate(-20,100,110)"/>
+        <ellipse cx="100" cy="110" rx="12" ry="24" transform="rotate(20,100,110)"/>
+        <ellipse cx="100" cy="165" rx="11" ry="22" transform="rotate(-18,100,165)"/>
+        <ellipse cx="100" cy="165" rx="11" ry="22" transform="rotate(18,100,165)"/>
+        <ellipse cx="100" cy="218" rx="10" ry="20" transform="rotate(-16,100,218)"/>
+        <ellipse cx="100" cy="218" rx="10" ry="20" transform="rotate(16,100,218)"/>
+        <ellipse cx="100" cy="268" rx="9" ry="18" transform="rotate(-14,100,268)"/>
+        <ellipse cx="100" cy="268" rx="9" ry="18" transform="rotate(14,100,268)"/>
+      </g>
+      <!-- Leaves -->
+      <path d="M100 350 Q60 310 40 270" fill="none" stroke="#3d5a2a" stroke-width="3"/>
+      <path d="M100 420 Q145 380 165 340" fill="none" stroke="#3d5a2a" stroke-width="3"/>
+    </svg>
+    <svg viewBox="0 0 200 600" xmlns="http://www.w3.org/2000/svg" style="position:absolute; bottom:0; right:8%; height:65%; width:auto; transform:scaleX(-1);">
+      <line x1="100" y1="580" x2="100" y2="80" stroke="#3d5a2a" stroke-width="3"/>
+      <g fill="#3d5a2a">
+        <ellipse cx="100" cy="80" rx="12" ry="24" transform="rotate(-15,100,80)"/>
+        <ellipse cx="100" cy="80" rx="12" ry="24" transform="rotate(15,100,80)"/>
+        <ellipse cx="100" cy="135" rx="10" ry="20" transform="rotate(-18,100,135)"/>
+        <ellipse cx="100" cy="135" rx="10" ry="20" transform="rotate(18,100,135)"/>
+        <ellipse cx="100" cy="186" rx="9" ry="18" transform="rotate(-16,100,186)"/>
+        <ellipse cx="100" cy="186" rx="9" ry="18" transform="rotate(16,100,186)"/>
+      </g>
+      <path d="M100 320 Q55 285 35 250" fill="none" stroke="#3d5a2a" stroke-width="2.5"/>
+    </svg>
+  </div>
+<div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow"><span>Vehicle Dynamics Engineering</span></div>
+      <h1>Steering Geometry Characterisation &amp; <em>Ackermann Validation</em></h1>
+      <p class="hero-desc">Theoretical Ackermann modelling combined with field measurements to evaluate steering geometry of a production agricultural tractor.</p>
+      <div class="hero-meta">
+        <span class="hero-tag">Mahindra 265</span>
+        <span class="hero-tag">2012 Production</span>
+        <span class="hero-tag">Agricultural Tractor</span>
+        <span class="hero-tag">Experimental Study</span>
+      </div>
+    </div>
+    <!-- HERO IMAGE — replace src with your tractor photo -->
+    <div class="hero-image-wrap fade-in">
+      <div class="hero-img-badge">Mahindra 265 · 2012</div>
+      <img class="hero-img"
+           src="Hero265.jpeg"
+           alt="Mahindra 265 Tractor"
+           id="img-hero">
+      <p class="hero-img-caption">Fig. 0 — Test Vehicle · Replace with actual tractor photograph</p>
+    </div>
+  </div>
+</section>
+
+<!-- KEY METRICS STRIP -->
+<div class="metrics-strip">
+  <div class="metrics-grid">
+    <div class="metric-card fade-in"><span class="metric-label">Wheelbase</span><span class="metric-value">1905</span><span class="metric-unit">mm</span></div>
+    <div class="metric-card fade-in"><span class="metric-label">Front Track</span><span class="metric-value">1270</span><span class="metric-unit">mm</span></div>
+    <div class="metric-card fade-in"><span class="metric-label">Measured KPI</span><span class="metric-value">7.75</span><span class="metric-unit">degrees</span></div>
+    <div class="metric-card fade-in"><span class="metric-label">Camber Angle</span><span class="metric-value">+3.0</span><span class="metric-unit">degrees</span></div>
+    <div class="metric-card fade-in"><span class="metric-label">Max Steering Lock</span><span class="metric-value">40</span><span class="metric-unit">degrees</span></div>
+    <div class="metric-card fade-in"><span class="metric-label">Ackermann Class</span><span class="metric-value" style="font-size:18px;line-height:1.2;padding-top:4px;">Prog.</span><span class="metric-unit">Tendency</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PROJECT OVERVIEW
+════════════════════════════════════════════ -->
+<section id="overview">
+  <div class="container">
+    <div class="section-label">01 — Project Overview</div>
+    <h2 class="section-title">Why Ackermann Geometry Matters</h2>
+    <div class="overview-grid">
+      <div class="overview-text fade-in">
+        <p>In a turn, each front wheel traces a different arc. To eliminate tyre scrub, the inner wheel must steer at a larger angle than the outer — the Ackermann condition. Pure Ackermann requires steering arms to converge at the rear axle centreline, a constraint rarely met in production vehicles due to packaging and structural limitations.</p>
+        <p>Agricultural tractors operate at low speeds in high-slip soil, where Ackermann deviation matters less than in highway vehicles. This study quantifies how closely the Mahindra 265 meets the ideal condition.</p>
+        <div class="callout-box" style="margin-top:24px;">
+          <p>Methodology: analytical Ackermann model validated against smartphone inclinometer field data — a low-cost but rigorous approach applicable to any production vehicle assessment.</p>
+        </div>
+      </div>
+      <!-- OVERVIEW SIDE IMAGE — replace with Ackermann principle sketch or tractor turning photo -->
+      <div class="fade-in">
+        <div class="photo-panel" style="border-radius:4px; overflow:hidden;">
+          <img src="Ackermann_Geomatry_diagram.png"
+               alt="Ackermann Geometry Diagram"
+               style="width:100%; display:block; object-fit:contain;"
+               id="img-overview">
+          <div class="photo-label"><span>Fig. 1 — Ackermann Steering Geometry</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ENGINEERING OBJECTIVES
+════════════════════════════════════════════ -->
+<section style="background: linear-gradient(180deg, #f5f0e8 0%, #ede8de 100%); padding: 80px 0;" id="objectives">
+  <div class="container">
+    <div class="section-label">02 — Engineering Objectives</div>
+    <h2 class="section-title">Scope of Investigation</h2>
+    <div class="objectives-grid">
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 01</span><div class="obj-title">Measure Vehicle Geometry</div><p class="obj-desc">Steel-tape survey of wheelbase, front track, and steering arm layout. CAD reconstruction from photographic reference in SolidWorks.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 02</span><div class="obj-title">Develop Ackermann Model</div><p class="obj-desc">Cotangent Ackermann formula applied to measured L and t to generate the ideal δi vs δo curve.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 03</span><div class="obj-title">Record Actual Steering Behaviour</div><p class="obj-desc">Smartphone inclinometers on both front hubs. 5° increment sweep from 0° to 40° outer lock. Three readings per point.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 04</span><div class="obj-title">Compare Theory vs Experiment</div><p class="obj-desc">Overlay measured vs ideal curves. Classify steering regime and quantify deviation across the lock range.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 05</span><div class="obj-title">Estimate KPI and Scrub Radius</div><p class="obj-desc">Photogrammetry + SolidWorks reconstruction to measure KPI, camber, and estimate scrub radius at the ground plane.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 06</span><div class="obj-title">Interpret Design Trade-offs</div><p class="obj-desc">Relate geometry findings to manual steering effort, low-speed field use, and beam-axle design constraints.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FIELD OBSERVATION
+════════════════════════════════════════════ -->
+<section style="padding:80px 0; background: linear-gradient(160deg, #1a1208 0%, #211508 50%, #1a1008 100%); border-top:4px solid var(--wheat);">
+  <div class="container">
+    <div class="section-label" style="color:rgba(212,168,67,0.7);">Field Observation</div>
+    <h2 class="section-title" style="color:#fff;">The Behaviour Being Characterised</h2>
+    <p class="section-body" style="margin-bottom:40px; color:rgba(255,255,255,0.6);">Mahindra 265 pulling a loaded trolley through a headland turn — the exact manoeuvre this study's geometry quantifies.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;" class="fade-in">
+      <!-- video left, takes same visual weight as one photo -->
+      <div class="img-block">
+        <video src="Tractor_turning_gif.mp4"
+               autoplay loop muted playsinline
+               style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:4px; border:1px solid rgba(212,168,67,0.25); display:block;">
+        </video>
+        <p class="photo-caption" style="color:rgba(255,255,255,0.35);">Fig. F1 — Loaded trolley turn, field conditions · Ackermann geometry in action</p>
+      </div>
+      <!-- right side: context callout -->
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:20px; padding:8px 0;">
+        <div class="callout-box" style="background:rgba(61,90,42,0.25); border-left:4px solid var(--wheat);">
+          <p style="color:rgba(255,255,255,0.75);">This is the manoeuvre the Ackermann condition is designed to optimise — inner wheel must steer sharper than outer to eliminate tyre scrub.</p>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:16px 14px; text-align:center;">
+            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:6px;">Max Lock</div>
+            <div style="font-family:var(--serif); font-size:24px; color:var(--wheat);">40°</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:16px 14px; text-align:center;">
+            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:6px;">Ackermann</div>
+            <div style="font-family:var(--serif); font-size:18px; color:var(--wheat); line-height:1.2;">Progressive</div>
+          </div>
+        </div>
+        <p style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.7; font-weight:300;">At full lock, inner wheel angle falls ~4–6° short of ideal — tyre scrub is visible under loaded turn conditions exactly like this one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     MEASUREMENT METHODOLOGY — consolidated
+════════════════════════════════════════════ -->
+<section id="methodology">
+  <div class="container">
+    <div class="section-label">03 — Measurement Methodology</div>
+    <h2 class="section-title">How Every Parameter Was Measured</h2>
+    <p class="section-body">Three methods, no specialist lab equipment. Conducted in sequence — dimensions first, then arm angle, then steering sweep.</p>
+
+    <!-- TOOLS SUMMARY TABLE -->
+    <div class="full-table-wrap fade-in" style="margin-top:40px;">
+      <table class="full-table">
+        <thead>
+          <tr><th>Tool</th><th>What It Measured</th><th>Used In</th><th>Accuracy</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Steel measuring tape</td><td>Wheelbase, track width, wheel diameters</td><td>Method 01</td><td>±1 mm</td></tr>
+          <tr><td>Chalk</td><td>Ground projection of tyre rotation centres</td><td>Method 01</td><td>—</td></tr>
+          <tr><td>Thread + stone (plumb line)</td><td>Vertical projection of steering arm pivot points</td><td>Method 02</td><td>±0.5°</td></tr>
+          <tr><td>Protractor / chalk lines</td><td>Steering arm inclination angle</td><td>Method 02</td><td>±0.5°</td></tr>
+          <tr><td>iPhone inclinometer (×2)</td><td>Inner and outer wheel steer angles</td><td>Method 03</td><td>±0.3–0.5°</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── METHOD 01 ────────────────────────── -->
+    <div style="margin-top:56px;" class="fade-in">
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+        <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-2); background:rgba(184,76,26,0.08); padding:6px 14px; border-radius:2px; white-space:nowrap;">Method 01</div>
+        <div style="font-family:var(--serif); font-size:22px; color:var(--ink); line-height:1.2;">Dimensional Survey — Chalk Projection + Steel Tape</div>
+      </div>
+      <p style="font-size:14px; color:var(--ink-3); line-height:1.75; font-weight:300; max-width:760px; margin-bottom:28px;">Tractor parked on level hard-standing. Chalk centrelines projected vertically from each tyre's rotation centre onto the ground. Steel tape measured between chalk marks — front-to-rear projection for wheelbase, front-left to front-right for track width. Three readings per dimension, mean recorded.</p>
+      <div class="geo-grid" style="margin-top:0;">
+        <div>
+          <div class="img-grid-2" style="margin-top:0;">
+            <div class="img-block">
+              <img src="side_rear_line.jpeg" alt="Chalk centrelines — rear and side projection"
+                   style="aspect-ratio:4/3; width:100%; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
+              <p class="photo-caption">Fig. 2a — Rear &amp; side: tyre centre projections for wheelbase</p>
+            </div>
+            <div class="img-block">
+              <img src="front_side_lines.jpeg" alt="Chalk centrelines — front projection for track width"
+                   style="aspect-ratio:4/3; width:100%; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
+              <p class="photo-caption">Fig. 2b — Front &amp; side: centrelines for track width</p>
+            </div>
+          </div>
+          <div class="img-block" style="margin-top:12px;">
+            <video src="Measurement_gif.mp4" autoplay loop muted playsinline
+                   style="width:100%; border-radius:4px; border:1px solid var(--rule); display:block; max-height:52vw; object-fit:cover;"></video>
+            <p class="photo-caption">Fig. 2c — Timelapse: tape measurement of wheelbase and track width</p>
+          </div>
+        </div>
+        <div>
+          <table class="data-table">
+            <thead><tr><th>Parameter</th><th>Description</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Wheelbase</td><td>Front axle to rear axle</td><td>1905 mm</td></tr>
+              <tr><td>Front Track Width</td><td>Centre-to-centre front wheels</td><td>1270 mm</td></tr>
+              <tr><td>Rear Track Width</td><td>Centre-to-centre rear wheels</td><td>1435 mm</td></tr>
+              <tr><td>Front Wheel Diameter</td><td>Loaded static radius ×2</td><td>610 mm</td></tr>
+              <tr><td>Rear Wheel Diameter</td><td>Loaded static radius ×2</td><td>1180 mm</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── METHOD 02 ────────────────────────── -->
+    <div style="margin-top:56px; border-top:1px solid var(--rule); padding-top:48px;" class="fade-in">
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+        <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-2); background:rgba(184,76,26,0.08); padding:6px 14px; border-radius:2px; white-space:nowrap;">Method 02</div>
+        <div style="font-family:var(--serif); font-size:22px; color:var(--ink); line-height:1.2;">Plumb-Line Ground Projection — Steering Arm Angle</div>
+      </div>
+      <p style="font-size:14px; color:var(--ink-3); line-height:1.75; font-weight:300; max-width:760px; margin-bottom:28px;">The steering arm sits elevated inside the axle assembly — unreachable with a protractor directly. A stone on a thread suspended from each pivot point marked its exact vertical projection on the ground. Connecting the two marks defined the arm's true direction. Angle measured against the pre-scribed tyre centreline reference already on the ground from Method 01.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;" class="plumb-method-grid">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="img-block">
+            <img src="instrument.jpeg" alt="Plumb instrument — stone and thread"
+                 style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
+            <p class="photo-caption" style="text-align:center;">Fig. 3a — Stone + thread instrument</p>
+          </div>
+          <div class="img-block">
+            <img src="thread hanging to pivot point.jpeg" alt="Thread at pivot point"
+                 style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
+            <p class="photo-caption" style="text-align:center;">Fig. 3b — Thread at pivot point</p>
+          </div>
+          <div class="img-block">
+            <img src="Full tractor thread view.jpeg" alt="Full tractor with plumb drop"
+                 style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
+            <p class="photo-caption" style="text-align:center;">Fig. 3c — Plumb line in use</p>
+          </div>
+          <div class="img-block">
+            <img src="Ground Diagram.jpeg" alt="Chalk construction on ground"
+                 style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
+            <p class="photo-caption" style="text-align:center;">Fig. 3d — Ground projection result</p>
+          </div>
+        </div>
+        <div>
+          <table class="data-table">
+            <thead><tr><th>Parameter</th><th>Description</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Steering Arm Length</td><td>Pivot to tie-rod end</td><td>~148 mm</td></tr>
+              <tr><td>Steering Arm Angle</td><td>Inclination from lateral axis</td><td>~12°</td></tr>
+            </tbody>
+          </table>
+          <div class="callout-box" style="margin-top:20px;">
+            <p>Arm extension lines converge forward of the rear axle — confirms under-Ackermann geometry before any calculation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── METHOD 03 ────────────────────────── -->
+    <div style="margin-top:56px; border-top:1px solid var(--rule); padding-top:48px;" class="fade-in">
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+        <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-2); background:rgba(184,76,26,0.08); padding:6px 14px; border-radius:2px; white-space:nowrap;">Method 03</div>
+        <div style="font-family:var(--serif); font-size:22px; color:var(--ink); line-height:1.2;">Smartphone Inclinometer Sweep — δi vs δo</div>
+      </div>
+      <p style="font-size:14px; color:var(--ink-3); line-height:1.75; font-weight:300; max-width:760px; margin-bottom:28px;">Two iPhones strapped rigidly to both front hubs, zeroed at straight-ahead. Steering turned left — inner wheel driven in 5° increments, outer wheel angle read simultaneously from the second phone. Three readings per step; outliers &gt;±0.5° rejected.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;" class="sweep-convention-grid">
+        <div style="background:var(--accent-light); border:1px solid var(--rule); border-radius:4px; padding:24px;">
+          <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Input / Output Convention</div>
+          <div style="display:grid; gap:10px; margin-bottom:20px;">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="width:3px; min-height:14px; background:var(--accent); border-radius:2px; flex-shrink:0; margin-top:3px;"></div>
+              <p style="font-size:13px; color:var(--ink-2); line-height:1.6; font-weight:300;"><strong>Driven:</strong> Inner wheel δ<sub>i</sub> — 5° steps, steering turned left.</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="width:3px; min-height:14px; background:var(--accent-2); border-radius:2px; flex-shrink:0; margin-top:3px;"></div>
+              <p style="font-size:13px; color:var(--ink-2); line-height:1.6; font-weight:300;"><strong>Recorded:</strong> Outer wheel δ<sub>o</sub> — second phone at each step.</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="width:3px; min-height:14px; background:var(--gold); border-radius:2px; flex-shrink:0; margin-top:3px;"></div>
+              <p style="font-size:13px; color:var(--ink-2); line-height:1.6; font-weight:300;"><strong>Zero ref:</strong> Both phones zeroed at straight-ahead before each run.</p>
+            </div>
+          </div>
+          <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" style="width:100%; max-width:280px; display:block; margin:0 auto;">
+            <defs><marker id="ag3" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#b8942a"/></marker></defs>
+            <rect x="90" y="40" width="100" height="90" fill="#e8eff7" stroke="#c0ccd8" stroke-width="1.5" rx="2"/>
+            <rect x="80" y="122" width="18" height="8" fill="#c8c8c0" stroke="#909088" stroke-width="1" rx="1"/>
+            <rect x="182" y="122" width="18" height="8" fill="#c8c8c0" stroke="#909088" stroke-width="1" rx="1"/>
+            <g transform="rotate(-28,102,46)"><rect x="90" y="40" width="20" height="8" fill="#3d5a2a" rx="1"/></g>
+            <g transform="rotate(-16,182,46)"><rect x="172" y="40" width="20" height="8" fill="#c8392a" rx="1"/></g>
+            <rect x="94" y="50" width="7" height="12" fill="#3d5a2a" rx="1" opacity="0.75"/>
+            <rect x="174" y="50" width="7" height="12" fill="#c8392a" rx="1" opacity="0.75"/>
+            <text x="70" y="34" fill="#3d5a2a" font-size="8" text-anchor="middle">INNER δi</text>
+            <text x="70" y="44" fill="#3d5a2a" font-size="8" text-anchor="middle">DRIVEN</text>
+            <text x="212" y="34" fill="#c8392a" font-size="8" text-anchor="middle">OUTER δo</text>
+            <text x="212" y="44" fill="#c8392a" font-size="8" text-anchor="middle">RECORDED</text>
+            <line x1="60" y1="46" x2="224" y2="46" stroke="#dcdcd8" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="140" y="41" fill="#9a9a9a" font-size="7" text-anchor="middle">ZERO REF</text>
+            <path d="M 140 138 Q 62 138 58 96" fill="none" stroke="#b8942a" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#ag3)"/>
+            <text x="110" y="153" fill="#b8942a" font-size="7" text-anchor="middle">STEER LEFT · 5° STEPS</text>
+          </svg>
+        </div>
+        <div>
+          <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-4); margin-bottom:12px;">Raw Measured Data</div>
+          <div class="full-table-wrap" style="margin-top:0;">
+            <table class="full-table">
+              <thead>
+                <tr><th>Step</th><th>Inner δi (°)</th><th>Outer δo (°)</th><th>Split Δ (°)</th></tr>
+              </thead>
+              <tbody id="method3-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CAD REPLICA
+════════════════════════════════════════════ -->
+<section id="cad-replica" style="background: linear-gradient(160deg, #1a1208 0%, #211508 50%, #1a1008 100%); border-top: 4px solid var(--wheat); padding: 100px 0;">
+  <div class="container">
+    <div class="section-label" style="color:rgba(212,168,67,0.7);">04 — CAD Reconstruction</div>
+    <h2 class="section-title" style="color:#fff;">Making a CAD Replica of the Tractor</h2>
+    <p class="section-body" style="max-width:720px; color:rgba(255,255,255,0.6);">Using all field-measured dimensions, a SolidWorks assembly was built to extract parameters that cannot be measured directly — scrub radius, KPI offset at the ground plane, and kingpin geometry. Each step below documents the reconstruction process.</p>
+
+    <!-- STEP GRID — steps appended here one by one -->
+    <div id="cad-steps-grid" style="margin-top: 64px; display: flex; flex-direction: column; gap: 0;">
+
+      <!-- ── STEP 01 ── -->
+      <div class="fade-in" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div class="img-block">
+          <img src="ground_projection_sld.png" alt="Ground projection of pivot points in SolidWorks"
+               style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
+          <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-1 — Ground projection image imported into SolidWorks as sketch reference</p>
+        </div>
+        <div>
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:14px;">Step 01</div>
+          <div style="font-family:var(--serif); font-size:22px; color:#fff; line-height:1.25; margin-bottom:16px;">Importing the Ground Projection</div>
+          <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.8; font-weight:300;">Phone held parallel to the ground to eliminate perspective distortion. The resulting image of the chalk-projected pivot points was imported directly into SolidWorks as a sketch reference — giving a true-to-scale top-view basis for the steering geometry reconstruction.</p>
+          <div style="margin-top:24px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(212,168,67,0.3); color:rgba(212,168,67,0.7); border-radius:2px;">No Distortion</span>
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.35); border-radius:2px;">Sketch Reference</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 02 ── -->
+      <div class="fade-in" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div>
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:14px;">Step 02</div>
+          <div style="font-family:var(--serif); font-size:22px; color:#fff; line-height:1.25; margin-bottom:16px;">Front Tyre — Camber &amp; KPI Applied</div>
+          <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.8; font-weight:300;">Using the field-measured dimensions, the front tyre was modelled with <strong style="color:rgba(255,255,255,0.8);">+3° positive camber</strong> (tilted outward) and the kingpin inclination set to the measured KPI value. This establishes the correct wheel plane orientation before the steering arm geometry is assembled.</p>
+          <div style="margin-top:24px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:14px; text-align:center;">
+              <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:6px;">Camber</div>
+              <div style="font-family:var(--serif); font-size:24px; color:var(--wheat);">+3.0°</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:14px; text-align:center;">
+              <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:6px;">KPI</div>
+              <div style="font-family:var(--serif); font-size:24px; color:var(--wheat);">7.75°</div>
+            </div>
+          </div>
+        </div>
+        <div class="img-block">
+          <img src="Replica_SLD_step2.png" alt="SolidWorks front tyre with camber and KPI applied"
+               style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
+          <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-2 — Front tyre modelled with 3° camber outward and measured KPI angle</p>
+        </div>
+      </div>
+
+
+      <!-- ── STEP 03 ── -->
+      <div class="fade-in" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div class="img-block">
+          <img src="Replica_SLD_step3.png" alt="SolidWorks centre axle mirrored for equal front track width"
+               style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
+          <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-3 — Centre axle modelled and mirrored so front track width matches the measured value</p>
+        </div>
+        <div>
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:14px;">Step 03</div>
+          <div style="font-family:var(--serif); font-size:22px; color:#fff; line-height:1.25; margin-bottom:16px;">Centre Axle &amp; Front Track Width</div>
+          <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.8; font-weight:300;">The centre axle was modelled and the front tyre assembly mirrored about the longitudinal centre plane. The mirror constraint forces both sides to be perfectly symmetric, and the overall track width was verified against the field measurement — completing the front axle assembly.</p>
+          <div style="margin-top:24px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(212,168,67,0.3); color:rgba(212,168,67,0.7); border-radius:2px;">Mirror Feature</span>
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.35); border-radius:2px;">Front TW Matched</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 04 ── -->
+      <div class="fade-in" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div>
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:14px;">Step 04</div>
+          <div style="font-family:var(--serif); font-size:22px; color:#fff; line-height:1.25; margin-bottom:16px;">Rear Axle — Wheelbase &amp; Rear Track Width</div>
+          <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.8; font-weight:300;">Rear tyres were placed at the measured wheelbase distance from the front wheel centres along the longitudinal axis. The rear track width was then set independently to match the field measurement, fully defining the four-wheel footprint of the tractor replica in SolidWorks.</p>
+          <div style="margin-top:24px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:14px; text-align:center;">
+              <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:6px;">Wheelbase</div>
+              <div style="font-family:var(--serif); font-size:24px; color:var(--wheat);">1905 mm</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:14px; text-align:center;">
+              <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:6px;">Rear TW</div>
+              <div style="font-family:var(--serif); font-size:24px; color:var(--wheat);">Matched</div>
+            </div>
+          </div>
+        </div>
+        <div class="img-block">
+          <img src="Replica_SLD_step4.png" alt="SolidWorks rear tyres placed at wheelbase distance with rear track width set"
+               style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
+          <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-4 — Rear tyres placed at wheelbase distance; rear track width matched to measurement</p>
+        </div>
+      </div>
+
+      <!-- ── STEP 05 ── -->
+      <div class="fade-in" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div class="img-block">
+          <img src="Replica_SLD_step5.png" alt="Basic bonnet made using surface modelling in SolidWorks"
+               style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
+          <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-5 — Basic bonnet form built using surface modelling to complete the tractor body silhouette</p>
+        </div>
+        <div>
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:14px;">Step 05</div>
+          <div style="font-family:var(--serif); font-size:22px; color:#fff; line-height:1.25; margin-bottom:16px;">Bonnet — Surface Modelling</div>
+          <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.8; font-weight:300;">A basic bonnet was constructed using SolidWorks surface modelling tools, giving the replica a representative body form. While detail accuracy is secondary here, the bonnet provides spatial context for the steering geometry and ensures the CAD assembly is visually recognisable as the Mahindra 265.</p>
+          <div style="margin-top:24px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(212,168,67,0.3); color:rgba(212,168,67,0.7); border-radius:2px;">Surface Modelling</span>
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.35); border-radius:2px;">Body Silhouette</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 06 — FINAL ── -->
+      <div class="fade-in" style="padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
+
+        <!-- Step label + title -->
+        <div style="margin-bottom:32px;">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:10px;">Step 06 — Final</div>
+          <div style="font-family:var(--serif); font-size:22px; color:#fff; line-height:1.25; margin-bottom:14px;">CAD Steering Setup — Projection Lines, KP Axis &amp; Steering Arm</div>
+          <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.8; font-weight:300; max-width:780px;">The completed CAD assembly shows the full steering geometry — projection lines from the ground measurement, the KPI axis, steering arm position, and front view with all angles at measured values. The ground projection photograph used as the base reference is shown alongside.</p>
+          <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(212,168,67,0.3); color:rgba(212,168,67,0.7); border-radius:2px;">Camber ✓</span>
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(212,168,67,0.3); color:rgba(212,168,67,0.7); border-radius:2px;">KPI ✓</span>
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(212,168,67,0.3); color:rgba(212,168,67,0.7); border-radius:2px;">Scrub Radius ✓</span>
+            <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(212,168,67,0.3); color:rgba(212,168,67,0.7); border-radius:2px;">Projection Lines ✓</span>
+          </div>
+        </div>
+
+        <!-- Video + Image side by side -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
+
+          <!-- Looping CAD video -->
+          <div>
+            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(212,168,67,0.5); margin-bottom:10px;">CAD Steering Setup — Projection Lines &amp; KP Axis</div>
+            <video
+              src="Steering Setup recording CAD.mp4"
+              autoplay loop muted playsinline
+              style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.35); display:block; background:#000; box-shadow: 0 0 40px rgba(212,168,67,0.1);">
+            </video>
+            <p class="photo-caption" style="color:rgba(255,255,255,0.3); margin-top:8px;">CAD animation — KP axis, projection lines and steering arm layout visible in loop</p>
+          </div>
+
+          <!-- Ground projection reference image -->
+          <div>
+            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(212,168,67,0.5); margin-bottom:10px;">Ground Projection — Base Reference Image</div>
+            <img src="ground_projection_sld.png" alt="Ground projection photograph used as base reference for CAD"
+                 style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
+            <p class="photo-caption" style="color:rgba(255,255,255,0.3); margin-top:8px;">Fig. — Ground projection photo (camera parallel to ground) used as the import reference in SolidWorks</p>
+          </div>
+
+        </div>
+
+        <!-- Final front view full width below -->
+        <div style="margin-top:24px;">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(212,168,67,0.5); margin-bottom:10px;">Final Front View — All Measured Angles Confirmed</div>
+          <img src="Replica_SLD_step6.png" alt="Final front view of CAD tractor replica with all measured angles"
+               style="width:100%; max-height:420px; object-fit:contain; border-radius:4px; border:1px solid rgba(212,168,67,0.35); display:block; background:rgba(0,0,0,0.4); box-shadow: 0 0 32px rgba(212,168,67,0.12);">
+          <p class="photo-caption" style="color:rgba(255,255,255,0.3); margin-top:8px;">Fig. CAD-6 — Final orthographic front view: camber, KPI, track width and scrub radius all verified</p>
+        </div>
+
+      </div>
+
+      <!-- ── VALIDATION ── -->
+      <div class="fade-in" style="padding:56px 0 0;">
+
+        <!-- Label + heading -->
+        <div style="margin-bottom:32px;">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:10px;">Model Validation</div>
+          <div style="font-family:var(--serif); font-size:22px; color:#fff; line-height:1.25; margin-bottom:14px;">Verifying the CAD Replica Against Experimental Data</div>
+          <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.8; font-weight:300; max-width:780px;">The reverse-engineered CAD model was validated by comparing CAD assembly outer wheel angles with experimentally measured steering angles across the full steering range.</p>
+        </div>
+
+        <!-- Image full width -->
+        <div style="margin-bottom:32px;">
+          <img src="Replica_Accuracy_verification.png" alt="CAD vs experimental steering angle comparison chart"
+               style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.25); display:block; object-fit:contain; background:rgba(0,0,0,0.35);">
+          <p class="photo-caption" style="color:rgba(255,255,255,0.3); margin-top:8px;">Fig. — CAD outer wheel angles vs experimentally measured steering angles across the steering range</p>
+        </div>
+
+        <!-- Result callout -->
+        <div style="background:rgba(80,200,100,0.07); border:1px solid rgba(80,200,100,0.25); border-radius:6px; padding:24px 32px; display:flex; align-items:center; gap:24px; flex-wrap:wrap; margin-bottom:32px;">
+          <div style="font-family:var(--serif); font-size:36px; color:#5aba70; line-height:1;">±1°</div>
+          <div>
+            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:#5aba70; margin-bottom:6px;">Validation Result</div>
+            <p style="font-size:14px; color:rgba(255,255,255,0.6); line-height:1.7; margin:0;">The reverse-engineered CAD model demonstrated <strong style="color:#fff;">good agreement</strong> with experimental measurements — steering angle deviations generally within <strong style="color:#5aba70;">±1°</strong> across the range, validating its use for subsequent steering geometry investigations.</p>
+          </div>
+        </div>
+
+        <!-- ── SCRUB RADIUS RESULT ── -->
+        <div class="fade-in" style="background:rgba(212,168,67,0.06); border:1px solid rgba(212,168,67,0.35); border-radius:6px; padding:32px 40px; display:flex; align-items:center; gap:40px; flex-wrap:wrap; margin-bottom:48px;">
+          <div style="text-align:center; flex-shrink:0;">
+            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.55); margin-bottom:10px;">Step 03 Result</div>
+            <div style="font-family:var(--serif); font-size:64px; color:var(--wheat); line-height:1; letter-spacing:-0.02em;">+33.48</div>
+            <div style="font-family:var(--mono); font-size:13px; color:rgba(212,168,67,0.6); margin-top:6px; letter-spacing:0.15em;">mm</div>
+          </div>
+          <div style="width:1px; height:80px; background:rgba(212,168,67,0.2); flex-shrink:0;"></div>
+          <div>
+            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:10px;">Scrub Radius — Mahindra 265 Front Axle</div>
+            <div style="font-family:var(--serif); font-size:20px; color:#fff; margin-bottom:8px;">Positive Scrub Radius</div>
+            <p style="font-size:14px; color:rgba(255,255,255,0.45); line-height:1.7; margin:0; font-weight:300;">Extracted from the validated CAD replica front view. Explanation to follow.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── CLOSING CALLOUT ── -->
+      <div class="fade-in" style="padding:8px 0 32px; text-align:center;">
+        <p style="display:inline; font-family:var(--sans); font-size:17px; font-weight:600; color:#1a1208; background:#f5d020; padding:6px 18px; border-radius:3px; line-height:2;">Starting from a Ground Projection Image, we arrived at a Final Usable CAD Replica of the Tractor.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ENGINEERING INSIGHT — PACKAGING & CAMBER
+════════════════════════════════════════════ -->
+<section id="insight" style="background: linear-gradient(160deg, #1a1208 0%, #211508 50%, #1a1008 100%); border-top: 4px solid wheat;">
+  <div class="container">
+
+    <!-- Header -->
+    <div style="text-align:center; padding-bottom:48px;">
+      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:16px;">Engineering Insight</div>
+      <h2 style="font-family:var(--serif); font-size:clamp(28px,4vw,42px); color:#fff; line-height:1.2; margin-bottom:20px;">Why Camber-Out? — The Packaging Problem</h2>
+      <p style="font-size:15px; color:rgba(255,255,255,0.45); max-width:600px; margin:0 auto; line-height:1.8; font-weight:300;">A tight clearance at the kingpin top joint forced a design decision. Two solutions existed — only one preserved steering effort.</p>
+    </div>
+
+    <!-- THE PROBLEM — full width photo -->
+    <div class="fade-in" style="margin-bottom:56px;">
+      <div style="position:relative; border-radius:6px; overflow:hidden; border:1px solid rgba(212,168,67,0.25);">
+        <img src="KPI_2.jpeg" alt="Tight clearance between kingpin top joint and tyre sidewall — marked with red pen"
+             style="width:100%; max-height:520px; object-fit:cover; object-position:center top; display:block;">
+        <div style="position:absolute; bottom:0; left:0; right:0; padding:20px 24px; background:linear-gradient(transparent, rgba(10,8,4,0.92));">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.7); margin-bottom:6px;">The Constraint</div>
+          <p style="font-size:13px; color:rgba(255,255,255,0.65); margin:0; line-height:1.6;">Red mark shows the critically tight gap between the kingpin top joint and the tyre sidewall. At 0° camber this gap closes — packaging fails.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TWO OPTIONS — side by side -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:56px;">
+
+      <!-- OPTION A — the wrong one -->
+      <div class="fade-in" style="background:rgba(200,50,50,0.07); border:1px solid rgba(200,80,80,0.25); border-radius:6px; padding:32px; position:relative;">
+        <div style="position:absolute; top:-1px; left:32px; font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; background:#c85050; color:#fff; padding:4px 12px; border-radius:0 0 4px 4px;">Option A — Rejected</div>
+        <div style="margin-top:20px;">
+          <div style="font-family:var(--serif); font-size:19px; color:#fff; margin-bottom:12px; line-height:1.3;">Shift the Entire Wheel Outward</div>
+          <p style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.8; font-weight:300; margin-bottom:20px;">Increasing wheel offset moves the whole wheel assembly outward — the tyre clears the kingpin joint. Problem solved… or is it?</p>
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=70"
+               alt="Placeholder — replace with wheel offset diagram"
+               style="width:100%; border-radius:4px; aspect-ratio:16/9; object-fit:cover; margin-bottom:20px; opacity:0.6;">
+          <div style="background:rgba(200,50,50,0.15); border-left:3px solid #c85050; padding:14px 16px; border-radius:0 4px 4px 0;">
+            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#c87070; margin-bottom:6px;">The Problem</div>
+            <p style="font-size:13px; color:rgba(255,255,255,0.55); line-height:1.7; margin:0;">The contact patch centre moves outward with the wheel. The KPI axis intersection on the ground stays fixed. The distance between them — the <strong style="color:#fff;">scrub radius — increases</strong>. On a manual steering tractor with no power assist, this directly translates to heavier steering effort. <strong style="color:#c87070;">Unacceptable.</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPTION B — the chosen one -->
+      <div class="fade-in" style="background:rgba(50,180,80,0.07); border:1px solid rgba(80,200,100,0.25); border-radius:6px; padding:32px; position:relative;">
+        <div style="position:absolute; top:-1px; left:32px; font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; background:#3a9a50; color:#fff; padding:4px 12px; border-radius:0 0 4px 4px;">Option B — Chosen ✓</div>
+        <div style="margin-top:20px;">
+          <div style="font-family:var(--serif); font-size:19px; color:#fff; margin-bottom:12px; line-height:1.3;">Camber the Wheel Outward +3°</div>
+          <p style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.8; font-weight:300; margin-bottom:20px;">Tilting the wheel top outward by 3° pushes the tyre crown away from the kingpin joint — the clearance problem is solved without moving the wheel laterally.</p>
+          <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=70"
+               alt="Placeholder — replace with camber diagram"
+               style="width:100%; border-radius:4px; aspect-ratio:16/9; object-fit:cover; margin-bottom:20px; opacity:0.6;">
+          <div style="background:rgba(50,180,80,0.12); border-left:3px solid #3a9a50; padding:14px 16px; border-radius:0 4px 4px 0;">
+            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#5aba70; margin-bottom:6px;">Why It Works</div>
+            <p style="font-size:13px; color:rgba(255,255,255,0.55); line-height:1.7; margin:0;">The contact patch centre barely shifts laterally. The KPI axis intersection stays the same. Therefore <strong style="color:#fff;">scrub radius is largely unchanged</strong> — steering effort is preserved. The clearance is gained "for free" at the top of the tyre. <strong style="color:#5aba70;">Elegant.</strong></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- KEY TAKEAWAY -->
+    <div class="fade-in" style="background:rgba(212,168,67,0.08); border:1px solid rgba(212,168,67,0.3); border-radius:6px; padding:32px 40px; text-align:center;">
+      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:16px;">Key Takeaway</div>
+      <p style="font-family:var(--serif); font-size:18px; color:rgba(255,255,255,0.85); line-height:1.8; max-width:680px; margin:0 auto;">Camber angle rotates the tyre about the contact patch — the crown moves out, the patch stays. Wheel offset shift moves <em>everything</em> out together. That distinction is why one solution works and the other doesn't.</p>
+    </div>
+
+  </div>
+</section>
+
+<section style="background: linear-gradient(180deg, #f5f0e8 0%, #ede8de 100%);" id="setup">
+  <div class="container">
+    <div class="section-label">05 — Experimental Setup</div>
+    <h2 class="section-title">Steering Angle Acquisition — Detail</h2>
+    <p class="section-body">Two iPhones rigidly strapped to both front hubs, zeroed at straight-ahead. Inner wheel angle driven in 5° increments; outer wheel angle recorded simultaneously. Sweep continued to full lock.</p>
+
+    <div class="rule-divider">⚙</div>
+
+    <!-- THEORETICAL MODEL -->
+    <div class="section-label" style="margin-top:0">06 — Theoretical Steering Model</div>
+    <h2 class="section-title">Ackermann Formulation</h2>
+    <div class="geo-grid">
+      <div class="fade-in">
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">Ideal inner wheel angle δ<sub>i</sub> as a function of outer wheel angle δ<sub>o</sub>, wheelbase L, and track t:</p>
+        <div style="background:#fff; border:1px solid var(--rule); border-radius:4px; padding:28px; margin-bottom:20px; text-align:center;">
+          <div style="font-family:var(--mono); font-size:18px; color:var(--accent); letter-spacing:0.05em; line-height:2;">cot(δ<sub>i</sub>) = cot(δ<sub>o</sub>) − t / L</div>
+          <div style="font-family:var(--mono); font-size:11px; color:var(--ink-4); margin-top:12px; letter-spacing:0.1em;">WHERE: L = 1905 mm &nbsp;|&nbsp; t = 1270 mm</div>
+        </div>
+        <p style="font-size:14px; color:var(--ink-3); line-height:1.75; font-weight:300;">The cotangent relationship is non-linear — the ideal curve progressively diverges from parallel steering as lock increases.</p>
+      </div>
+      <!-- SOLIDWORKS / GEOMETRY DIAGRAM — replace with CAD screenshot -->
+      <div class="fade-in">
+        <div class="img-block">
+          <img src="https://images.unsplash.com/photo-1581093806997-124204d9fa9d?w=700&q=80"
+               alt="SolidWorks steering arm geometry — replace with CAD screenshot"
+               style="aspect-ratio:4/3; border-radius:4px;"
+               id="img-cad-steering">
+          <p class="photo-caption">Fig. 8 — Replace with SolidWorks steering arm geometry screenshot</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     EXPERIMENTAL RESULTS
+════════════════════════════════════════════ -->
+<section id="results">
+  <div class="container">
+    <div class="section-label">07 — Experimental Results</div>
+    <h2 class="section-title">Measured Steering Data</h2>
+    <p class="section-body">Full lock range 0–40° outer. Inner wheel angles and split computed from raw inclinometer readings.</p>
+    <div class="full-table-wrap fade-in">
+      <table class="full-table">
+        <thead>
+          <tr>
+            <th>Test No.</th>
+            <th>Outer Wheel δo (°)</th>
+            <th>Inner Measured δi (°)</th>
+            <th>Inner Ideal δi (°)</th>
+            <th>Steering Split Δ (°)</th>
+            <th>Deviation (°)</th>
+          </tr>
+        </thead>
+        <tbody id="results-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CORRELATION ANALYSIS
+════════════════════════════════════════════ -->
+<section style="background: linear-gradient(180deg, #edf2e8 0%, #e8ede0 100%);" id="analysis">
+  <div class="container">
+    <div class="section-label">08 — Correlation Analysis</div>
+    <h2 class="section-title">Measured vs Ideal Ackermann</h2>
+    <p class="section-body">Theoretical Ackermann curve overlaid against measured inner wheel angles. Deviation increases progressively with lock.</p>
+    <div class="chart-container fade-in">
+      <div class="chart-header">
+        <div class="chart-title">Ackermann Comparison — Inner vs Outer Wheel Angle</div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#1a3a5c;"></div>Ideal Ackermann</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#c8392a;"></div>Measured</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#b8942a;"></div>Parallel Steering</div>
+        </div>
+      </div>
+      <div class="chart-wrapper"><canvas id="ackermannChart"></canvas></div>
+      <div style="margin-top:24px; display:grid; grid-template-columns: repeat(3,1fr); gap:16px;">
+        <div style="padding:16px; background:var(--paper-2); border-radius:4px; text-align:center;"><div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-4); margin-bottom:8px;">Low Lock (0–15°)</div><div style="font-family:var(--serif); font-size:16px; color:var(--ink-2);">Near-Parallel</div><div style="font-size:12px; color:var(--ink-3); margin-top:4px; font-weight:300;">Both wheels track similarly; minimal Ackermann effect</div></div>
+        <div style="padding:16px; background:var(--accent-light); border-radius:4px; text-align:center;"><div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">Mid Lock (15–28°)</div><div style="font-family:var(--serif); font-size:16px; color:var(--accent);">Progressive</div><div style="font-size:12px; color:var(--accent); margin-top:4px; font-weight:300; opacity:0.7;">Measured curve diverges progressively toward ideal</div></div>
+        <div style="padding:16px; background:var(--paper-2); border-radius:4px; text-align:center;"><div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-4); margin-bottom:8px;">High Lock (28–40°)</div><div style="font-family:var(--serif); font-size:16px; color:var(--ink-2);">Under-Ackermann</div><div style="font-size:12px; color:var(--ink-3); margin-top:4px; font-weight:300;">Measured inner angle falls short; tyre scrub at max lock</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     STEERING ARM GEOMETRY INVESTIGATION
+════════════════════════════════════════════ -->
+<section id="steering-arm">
+  <div class="container">
+    <div class="section-label">09 — Steering Arm Geometry Investigation</div>
+    <h2 class="section-title">Arm Extension &amp; Ackermann Construction</h2>
+    <p class="section-body">Extending the steering arm centrelines determines whether they converge at the rear axle — the criterion for pure Ackermann.</p>
+    <div class="geo-grid" style="margin-top:48px;">
+      <div class="fade-in">
+        <!-- STEERING ARM DIAGRAM — replace with annotated top-view photo or CAD -->
+        <div class="img-block">
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=700&q=80"
+               alt="Steering arm geometry — replace with annotated CAD top view"
+               style="aspect-ratio:4/3; border-radius:4px;"
+               id="img-arm-geometry">
+          <p class="photo-caption">Fig. 9 — Replace with steering arm extension / Ackermann construction diagram</p>
+        </div>
+      </div>
+      <div class="fade-in">
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">SolidWorks extension of the steering arm centrelines shows their intersection lies <strong>forward of the rear axle</strong> — confirming under-Ackermann geometry.</p>
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">The offset distance from the intersection to the rear axle directly sets the degree of under-Ackermann. Longer arms or a larger toe-in angle would shift the intersection rearward and increase Ackermann tendency.</p>
+        <div class="callout-box">
+          <p>Forward intersection → under-Ackermann. At rear axle → pure Ackermann. Behind rear axle → over-Ackermann. Mahindra 265: mild-to-moderate under-Ackermann.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KPI AND CAMBER
+════════════════════════════════════════════ -->
+<section style="background: linear-gradient(180deg, #f5f0e8 0%, #ede8de 100%);" id="kpi">
+  <div class="container">
+    <div class="section-label">10 — KPI &amp; Camber Investigation</div>
+    <h2 class="section-title">Kingpin Inclination and Wheel Camber</h2>
+    <p class="section-body">Measured via SolidWorks photogrammetry reconstruction, cross-referenced against plumb-line reference photographs.</p>
+    <div class="kpi-grid">
+      <div class="fade-in">
+        <div class="kpi-visual">
+          <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-4); margin-bottom:8px;">Primary Result</div>
+          <div class="large-stat"><span class="large-stat-value">7.75°</span><span class="large-stat-label">Kingpin Inclination Angle (KPI)</span></div>
+          <div class="stat-row">
+            <div><span class="stat-mini-value">+3.0°</span><span class="stat-mini-label">Static Camber</span></div>
+            <div><span class="stat-mini-value">~32mm</span><span class="stat-mini-label">Est. Scrub Radius</span></div>
+          </div>
+        </div>
+        <!-- KPI MEASUREMENT IMAGE — replace with SolidWorks screenshot or plumb-line photo -->
+        <div class="img-block" style="margin-top:16px;">
+          <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=700&q=80"
+               alt="KPI measurement — replace with SolidWorks front-view screenshot"
+               style="aspect-ratio:3/2; border-radius:4px;"
+               id="img-kpi-solidworks">
+          <p class="photo-caption">Fig. 10 — Replace with SolidWorks KPI / camber measurement screenshot</p>
+        </div>
+      </div>
+      <div class="fade-in">
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">KPI of 7.75° is within the typical 6–10° range for agricultural tractors. Higher KPI reduces mechanical trail and scrub radius — directly lowering manual steering effort.</p>
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">+3.0° positive camber (top of wheel tilting outward) is standard for beam-axle tractors — it pre-loads the inner bearing against lateral field loads.</p>
+        <!-- FRONT VIEW PHOTO — replace with tractor front-view photograph showing camber -->
+        <div class="img-block">
+          <img src="https://images.unsplash.com/photo-1568667256549-094345857637?w=700&q=80"
+               alt="Tractor front view camber — replace with actual front-view photograph"
+               style="aspect-ratio:3/2; border-radius:4px;"
+               id="img-frontview">
+          <p class="photo-caption">Fig. 11 — Replace with tractor front-view photograph (camber visible)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SCRUB RADIUS
+════════════════════════════════════════════ -->
+<section id="scrub">
+  <div class="container">
+    <div class="section-label">11 — Scrub Radius Estimation</div>
+    <h2 class="section-title">Steering Axis Projection at Ground Plane</h2>
+    <p class="section-body">Horizontal offset between the steering axis ground intercept and tyre contact patch centre. Drives steering effort and self-centring torque.</p>
+    <div class="geo-grid" style="margin-top:48px;">
+      <div class="fade-in">
+        <!-- SCRUB RADIUS DIAGRAM — replace with annotated CAD ground plane projection -->
+        <div class="img-block">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&q=80"
+               alt="Scrub radius — replace with CAD scrub radius construction diagram"
+               style="aspect-ratio:4/3; border-radius:4px;"
+               id="img-scrub">
+          <p class="photo-caption">Fig. 12 — Replace with steering axis projection / scrub radius diagram</p>
+        </div>
+      </div>
+      <div class="fade-in">
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">KPI 7.75° + camber +3.0° → steering axis intercepts ground inboard of contact patch. Estimated positive scrub radius: ~32 mm.</p>
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">Positive scrub radius creates a moment about the steering axis under tractive/braking loads — increases steering effort, felt most in manual systems at slow field speeds.</p>
+        <div class="callout-box">
+          <p>~32 mm positive scrub radius is acceptable for a compact beam-axle manual-steering tractor at agricultural working speeds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ENGINEERING DISCUSSION
+════════════════════════════════════════════ -->
+<section style="background: linear-gradient(180deg, #f5f0e8 0%, #ede8de 100%);" id="discussion">
+  <div class="container">
+    <div class="section-label">12 — Engineering Discussion</div>
+    <h2 class="section-title">Design Interpretation</h2>
+    <p class="section-body">Deviations observed are consistent with known production vehicle steering trade-offs.</p>
+    <div class="discussion-grid fade-in">
+      <div class="disc-item"><div class="disc-title">Packaging Constraints</div><p class="disc-desc">Pure Ackermann requires arms to converge at the rear axle — geometrically impractical in a compact beam-axle layout without sacrificing ground clearance or structural stiffness.</p></div>
+      <div class="disc-item"><div class="disc-title">Manufacturing Tolerance</div><p class="disc-desc">Casting tolerances in arm and axle geometry introduce systematic angular offsets. Acceptable for an off-highway vehicle with no high-speed steering demands.</p></div>
+      <div class="disc-item"><div class="disc-title">Agricultural Operating Regime</div><p class="disc-desc">At field working speeds on soft soil, slip angle effects dominate over kinematic Ackermann deviation — reducing its practical significance considerably.</p></div>
+      <div class="disc-item"><div class="disc-title">Steering Effort — Manual System</div><p class="disc-desc">Manual steering system. Positive scrub radius increases effort at lock but improves self-centring. KPI and camber tuned as a deliberate compromise between the two.</p></div>
+      <div class="disc-item"><div class="disc-title">Positive Camber Implications</div><p class="disc-desc">Positive camber pre-loads the outer bearing in straight running and partially unloads it in turns — suitable for field conditions where tyre wear rate is low.</p></div>
+      <div class="disc-item"><div class="disc-title">Progressive Ackermann Tendency</div><p class="disc-desc">Near-parallel at low lock → approaches ideal at mid-range → under-Ackermann at full lock. Geometry appears optimised for headland turns, not maximum lock manoeuvres.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SOURCES OF ERROR
+════════════════════════════════════════════ -->
+<section id="error">
+  <div class="container">
+    <div class="section-label">13 — Measurement Uncertainty</div>
+    <h2 class="section-title">Sources of Error and Limitations</h2>
+    <div class="error-grid fade-in">
+      <div class="error-item"><div class="error-icon">📐</div><div><div class="error-title">Smartphone Sensor Accuracy</div><p class="error-desc">Consumer MEMS accelerometers: ±0.3–0.5° resolution. Averaging reduces random error but leaves an irreducible ±0.5° uncertainty band on all reported angles.</p></div></div>
+      <div class="error-item"><div class="error-icon">📷</div><div><div class="error-title">Photogrammetry Assumptions</div><p class="error-desc">CAD reconstruction assumes perpendicular camera alignment and zero lens distortion. Perspective error contributes ~±0.5° to KPI measurement.</p></div></div>
+      <div class="error-item"><div class="error-icon">🔄</div><div><div class="error-title">Tyre Deformation Effects</div><p class="error-desc">Sidewall deformation under load alters apparent wheel plane orientation. High-aspect-ratio agricultural tyres can contribute up to ±1° apparent camber variation.</p></div></div>
+      <div class="error-item"><div class="error-icon">⚙️</div><div><div class="error-title">Steering Linkage Compliance</div><p class="error-desc">Wear in drag link, tie rod ends, and kingpin bearings introduces non-systematic lash — cannot be corrected by averaging alone.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KEY FINDINGS
+════════════════════════════════════════════ -->
+<section style="background: linear-gradient(180deg, #edf2e8 0%, #e8ede0 100%);" id="findings">
+  <div class="container">
+    <div class="section-label">14 — Key Findings</div>
+    <h2 class="section-title">Engineering Summary</h2>
+    <div class="findings-grid">
+      <div class="finding-card fade-in"><div class="finding-icon">🔄</div><div class="finding-title">Steering Behaviour Classification</div><span class="finding-value">Progressive</span><p class="finding-desc">Near-parallel at low lock → progressive Ackermann tendency at mid-range → under-Ackermann at full lock. Consistent with arm geometry not converging at the rear axle.</p></div>
+      <div class="finding-card warn fade-in"><div class="finding-icon">📐</div><div class="finding-title">Ackermann Deviation at Max Lock</div><span class="finding-value">~4–6°</span><p class="finding-desc">At 40° outer lock, measured inner angle is ~4–6° below ideal — indicating lateral tyre scrub during tight manoeuvres.</p></div>
+      <div class="finding-card fade-in"><div class="finding-icon">📏</div><div class="finding-title">Kingpin Inclination</div><span class="finding-value">7.75°</span><p class="finding-desc">Within the 6–10° agricultural tractor range. Provides self-centring torque without excessive steering effort at field working speeds.</p></div>
+      <div class="finding-card alert fade-in"><div class="finding-icon">🔺</div><div class="finding-title">Positive Camber</div><span class="finding-value">+3.0°</span><p class="finding-desc">Typical for beam-axle tractors. Combined with KPI, produces ~32 mm positive scrub radius — increases manual steering effort at low speed.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SKILLS
+════════════════════════════════════════════ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">15 — Competencies Demonstrated</div>
+    <h2 class="section-title">Skills Applied</h2>
+    <div class="skills-wrap fade-in">
+      <span class="skill-tag">Vehicle Dynamics</span>
+      <span class="skill-tag">Steering Geometry</span>
+      <span class="skill-tag">Suspension Kinematics</span>
+      <span class="skill-tag">Experimental Validation</span>
+      <span class="skill-tag">Data Analysis</span>
+      <span class="skill-tag">CAD-Based Measurement</span>
+      <span class="skill-tag">Engineering Investigation</span>
+      <span class="skill-tag">Technical Reporting</span>
+      <span class="skill-tag">Ackermann Modelling</span>
+      <span class="skill-tag">Photogrammetry</span>
+      <span class="skill-tag">Measurement Uncertainty</span>
+      <span class="skill-tag">SolidWorks</span>
+      <span class="skill-tag">Front Axle Analysis</span>
+      <span class="skill-tag">Agricultural Vehicles</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CONCLUSION
+════════════════════════════════════════════ -->
+<section class="conclusion-bg" id="conclusion">
+  <div class="container">
+    <div class="section-label">16 — Engineering Conclusion</div>
+    <h2 class="section-title">Summary of Findings</h2>
+    <p class="conclusion-text">Steering geometry of the <span class="conclusion-highlight">Mahindra 265 (2012)</span> was characterised through dimensional survey, SolidWorks photogrammetry, and smartphone inclinometer field tests.</p>
+    <p class="conclusion-text">Theoretical model (L=<span class="conclusion-highlight">1905 mm</span>, t=<span class="conclusion-highlight">1270 mm</span>) vs measured data reveals a <span class="conclusion-highlight">progressive Ackermann tendency</span> — near-parallel at low lock, approaching ideal at mid-range, and ~<span class="conclusion-highlight">4–6° under-Ackermann</span> at full lock.</p>
+    <p class="conclusion-text">KPI <span class="conclusion-highlight">7.75°</span>, camber <span class="conclusion-highlight">+3.0°</span>, estimated scrub radius ~32 mm. Deviations from pure Ackermann are consistent with beam-axle packaging constraints and are well-suited to low-speed, high-slip field operation.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Vehicle Dynamics Case Study — Mahindra 265 Steering Geometry Characterisation &nbsp;|&nbsp; Engineering Portfolio</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lb-overlay" id="lbOverlay">
+  <div class="lb-inner" id="lbInner">
+    <button class="lb-close" id="lbClose">✕</button>
+    <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+    <img src="" alt="" id="lbImg">
+    <button class="lb-nav lb-next" id="lbNext">›</button>
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────
+const L = 1905, t = 1270;
+function idealInner(outerDeg) {
+  const outerRad = outerDeg * Math.PI / 180;
+  const cotInner = (1 / Math.tan(outerRad)) - (t / L);
+  const innerRad = Math.atan(1 / cotInner);
+  return innerRad * 180 / Math.PI;
+}
+const outerAngles  = [0, 5, 10, 15, 20, 25, 30, 35, 40];
+const measuredInner = [0, 5.3, 10.9, 16.8, 23.1, 29.5, 35.4, 40.2, 44.1];
+const idealInnerArr = outerAngles.map(a => a === 0 ? 0 : idealInner(a));
+const parallelLine  = outerAngles.map(a => a);
+
+// ─── METHOD 03 TABLE ─────────────────────────────────────────────────────
+const m3body = document.getElementById('method3-table-body');
+if (m3body) {
+  outerAngles.forEach((outer, i) => {
+    const inner = measuredInner[i];
+    const split = (inner - outer).toFixed(1);
+    m3body.innerHTML += `<tr>
+      <td>${String(i+1).padStart(2,'0')}</td>
+      <td>${inner.toFixed(1)}</td>
+      <td>${outer.toFixed(1)}</td>
+      <td>${split >= 0 ? '+' : ''}${split}</td>
+    </tr>`;
+  });
+}
+
+// ─── TABLE ───────────────────────────────────────────────────────────────
+const tbody = document.getElementById('results-table-body');
+outerAngles.forEach((outer, i) => {
+  const measured = measuredInner[i];
+  const ideal = idealInnerArr[i];
+  const split = measured - outer;
+  const deviation = measured - ideal;
+  const hi = Math.abs(deviation) > 2;
+  tbody.innerHTML += `<tr>
+    <td>${String(i+1).padStart(2,'0')}</td>
+    <td>${outer.toFixed(1)}</td>
+    <td class="${hi?'highlight':''}">${measured.toFixed(1)}</td>
+    <td>${ideal.toFixed(1)}</td>
+    <td>${split.toFixed(1)}</td>
+    <td class="${hi?'highlight':''}">${(deviation>=0?'+':'')+deviation.toFixed(1)}</td>
+  </tr>`;
+});
+
+// ─── CHART ───────────────────────────────────────────────────────────────
+const ctx = document.getElementById('ackermannChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: outerAngles,
+    datasets: [
+      { label: 'Ideal Ackermann', data: idealInnerArr, borderColor: '#1a3a5c', backgroundColor: 'rgba(26,58,92,0.05)', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#1a3a5c', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.3, fill: false },
+      { label: 'Measured', data: measuredInner, borderColor: '#c8392a', borderDash: [6,4], backgroundColor: 'rgba(200,57,42,0.05)', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#c8392a', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.3, fill: false },
+      { label: 'Parallel', data: parallelLine, borderColor: '#b8942a', borderDash: [3,5], borderWidth: 1.5, pointRadius: 0, tension: 0.1, fill: false }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#fff', titleColor: '#0d0d0d', bodyColor: '#5a5a5a', borderColor: '#dcdcd8', borderWidth: 1, padding: 12, titleFont: { family: 'DM Mono', size: 11 }, bodyFont: { family: 'DM Sans', size: 12, weight: 300 }, callbacks: { title: items => `Outer Wheel: ${items[0].label}°`, label: item => `${item.dataset.label}: ${item.raw.toFixed(1)}°` } }
+    },
+    scales: {
+      x: { title: { display: true, text: 'OUTER WHEEL ANGLE  δo  (°)', color: '#9a9a9a', font: { family: 'DM Mono', size: 10 }, padding: { top: 10 } }, ticks: { color: '#9a9a9a', font: { family: 'DM Mono', size: 10 }, callback: v => v + '°' }, grid: { color: '#f0f0ec' } },
+      y: { title: { display: true, text: 'INNER WHEEL ANGLE  δi  (°)', color: '#9a9a9a', font: { family: 'DM Mono', size: 10 }, padding: { bottom: 10 } }, ticks: { color: '#9a9a9a', font: { family: 'DM Mono', size: 10 }, callback: v => v + '°' }, grid: { color: '#f0f0ec' }, min: 0, max: 60 }
+    }
+  }
+});
+
+// ─── SCROLL ANIMATIONS ───────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+document.querySelectorAll('.objectives-grid, .setup-grid, .findings-grid, .skills-wrap, .error-grid, .discussion-grid').forEach(grid => {
+  grid.querySelectorAll('.obj-card, .setup-step, .finding-card, .skill-tag, .error-item, .disc-item').forEach((child, i) => {
+    child.style.transitionDelay = `${i * 60}ms`;
+    child.classList.add('fade-in');
+    observer.observe(child);
+  });
+});
+
+// ─── HAMBURGER ───────────────────────────────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('open');
+  });
+});
+
+// ─── LIGHTBOX ────────────────────────────────────────────────────────────
+const overlay = document.getElementById('lbOverlay');
+const lbImg   = document.getElementById('lbImg');
+const lbCap   = document.getElementById('lbCaption');
+const lbClose = document.getElementById('lbClose');
+const lbPrev  = document.getElementById('lbPrev');
+const lbNext  = document.getElementById('lbNext');
+
+// Gather all clickable images with data-lb attribute
+let lbImages = [];
+let lbCurrent = 0;
+
+function buildLbList() {
+  lbImages = Array.from(document.querySelectorAll('img[data-lb]')).map(img => {
+    // Look for caption: next sibling <p>, parent container caption, or alt
+    const nextP = img.nextElementSibling;
+    const captionFromSibling = nextP && nextP.tagName === 'P' ? nextP.textContent.trim() : null;
+    const captionFromContainer = img.closest('div')
+      ?.querySelector('.photo-caption, .hero-img-caption')
+      ?.textContent?.trim();
+    return {
+      src: img.src,
+      alt: img.alt,
+      caption: captionFromSibling || captionFromContainer || img.alt
+    };
+  });
+}
+
+function openLb(index) {
+  lbCurrent = index;
+  lbImg.src = lbImages[index].src;
+  lbImg.alt = lbImages[index].alt;
+  lbCap.textContent = lbImages[index].caption;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  updateNavButtons();
+}
+
+function closeLb() {
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  lbImg.src = '';
+}
+
+function updateNavButtons() {
+  lbPrev.style.display = lbCurrent > 0 ? 'flex' : 'none';
+  lbNext.style.display = lbCurrent < lbImages.length - 1 ? 'flex' : 'none';
+}
+
+function navigate(dir) {
+  lbCurrent = Math.max(0, Math.min(lbImages.length - 1, lbCurrent + dir));
+  lbImg.src = lbImages[lbCurrent].src;
+  lbImg.alt = lbImages[lbCurrent].alt;
+  lbCap.textContent = lbImages[lbCurrent].caption;
+  updateNavButtons();
+}
+
+lbClose.addEventListener('click', closeLb);
+lbPrev.addEventListener('click', e => { e.stopPropagation(); navigate(-1); });
+lbNext.addEventListener('click', e => { e.stopPropagation(); navigate(1); });
+overlay.addEventListener('click', e => { if (e.target === overlay || e.target === document.getElementById('lbInner')) closeLb(); });
+document.addEventListener('keydown', e => {
+  if (!overlay.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowLeft') navigate(-1);
+  if (e.key === 'ArrowRight') navigate(1);
+});
+
+// Attach click handlers after DOM ready
+window.addEventListener('load', () => {
+  // Mark ALL images on the page as lightbox-able (skip tiny icons/logos)
+  document.querySelectorAll('img').forEach(img => {
+    // skip images that are clearly decorative/tiny
+    if (img.width < 60 && img.height < 60) return;
+    img.setAttribute('data-lb', '1');
+    img.style.cursor = 'zoom-in';
+  });
+  buildLbList();
+  document.querySelectorAll('img[data-lb]').forEach((img) => {
+    // Wrap in zoom-wrap if not already wrapped
+    if (!img.parentElement.classList.contains('img-zoom-wrap')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'img-zoom-wrap';
+      img.parentNode.insertBefore(wrap, img);
+      wrap.appendChild(img);
+    }
+    img.addEventListener('click', () => {
+      buildLbList();
+      const idx = lbImages.findIndex(x => x.src === img.src);
+      openLb(idx >= 0 ? idx : 0);
+    });
+  });
+});
+</script>
+</body>
+</html>
