@@ -369,7 +369,6 @@
     <li><a href="#geometry">Geometry</a></li>
     <li><a href="#methodology">Methodology</a></li>
     <li><a href="#cad-replica">CAD</a></li>
-    <li><a href="#insight">Insight</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#findings">Findings</a></li>
   </ul>
@@ -420,8 +419,8 @@
 <div class="hero-inner">
     <div class="hero-content">
       <div class="hero-eyebrow"><span>Vehicle Dynamics Engineering</span></div>
-      <h1>Steering Geometry Characterisation &amp; <em>Ackermann Validation</em></h1>
-      <p class="hero-desc">Theoretical Ackermann modelling combined with field measurements to evaluate steering geometry of a production agricultural tractor.</p>
+      <h1>Steering Geometry <em>Investigation</em> of an Agricultural Tractor</h1>
+      <p class="hero-desc">Field measurement and CAD reconstruction to fully characterise the steering geometry of a production agricultural tractor — covering wheel angles, kingpin geometry, camber, scrub radius, and steering arm layout.</p>
       <div class="hero-meta">
         <span class="hero-tag">Mahindra 265</span>
         <span class="hero-tag">2012 Production</span>
@@ -449,7 +448,7 @@
     <div class="metric-card fade-in"><span class="metric-label">Measured KPI</span><span class="metric-value">7.75</span><span class="metric-unit">degrees</span></div>
     <div class="metric-card fade-in"><span class="metric-label">Camber Angle</span><span class="metric-value">+3.0</span><span class="metric-unit">degrees</span></div>
     <div class="metric-card fade-in"><span class="metric-label">Max Steering Lock</span><span class="metric-value">40</span><span class="metric-unit">degrees</span></div>
-    <div class="metric-card fade-in"><span class="metric-label">Ackermann Class</span><span class="metric-value" style="font-size:18px;line-height:1.2;padding-top:4px;">Prog.</span><span class="metric-unit">Tendency</span></div>
+    <div class="metric-card fade-in"><span class="metric-label">Steering Regime</span><span class="metric-value" style="font-size:18px;line-height:1.2;padding-top:4px;">Prog.</span><span class="metric-unit">Under-Ackermann</span></div>
   </div>
 </div>
 
@@ -459,23 +458,23 @@
 <section id="overview">
   <div class="container">
     <div class="section-label">01 — Project Overview</div>
-    <h2 class="section-title">Why Ackermann Geometry Matters</h2>
+    <h2 class="section-title">Why Steering Geometry Matters</h2>
     <div class="overview-grid">
       <div class="overview-text fade-in">
-        <p>In a turn, each front wheel traces a different arc. To eliminate tyre scrub, the inner wheel must steer at a larger angle than the outer — the Ackermann condition. Pure Ackermann requires steering arms to converge at the rear axle centreline, a constraint rarely met in production vehicles due to packaging and structural limitations.</p>
-        <p>Agricultural tractors operate at low speeds in high-slip soil, where Ackermann deviation matters less than in highway vehicles. This study quantifies how closely the Mahindra 265 meets the ideal condition.</p>
+        <p>Steering geometry defines how a vehicle's front wheels turn, how they are oriented relative to the road, and how effortlessly the driver can control direction. The kingpin inclination (KPI), camber, scrub radius, and the differential angle relationship between the two front wheels all interact to determine steering feel, tyre wear, and stability.</p>
+        <p>Agricultural tractors operate at low speeds in high-slip soil, where geometry deviations affect tyre scrub, driver fatigue, and headland efficiency differently from highway vehicles. This study fully characterises the Mahindra 265's steering geometry through field measurement, photogrammetry, and CAD reconstruction.</p>
         <div class="callout-box" style="margin-top:24px;">
-          <p>Methodology: analytical Ackermann model validated against smartphone inclinometer field data — a low-cost but rigorous approach applicable to any production vehicle assessment.</p>
+          <p>Methodology: field survey, plumb-line photogrammetry, and smartphone compass sweep — a low-cost but rigorous approach to full steering geometry characterisation applicable to any production vehicle.</p>
         </div>
       </div>
       <!-- OVERVIEW SIDE IMAGE — replace with Ackermann principle sketch or tractor turning photo -->
       <div class="fade-in">
         <div class="photo-panel" style="border-radius:4px; overflow:hidden;">
-          <img src="Ackermann_Geomatry_diagram.png"
+          <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787125026/Ackermann_Geomatry_diagram_iqioia.png"
                alt="Ackermann Geometry Diagram"
                style="width:100%; display:block; object-fit:contain;"
                id="img-overview">
-          <div class="photo-label"><span>Fig. 1 — Ackermann Steering Geometry</span></div>
+          <div class="photo-label"><span>Fig. 1 — Steering Geometry Principles</span></div>
         </div>
       </div>
     </div>
@@ -491,11 +490,11 @@
     <h2 class="section-title">Scope of Investigation</h2>
     <div class="objectives-grid">
       <div class="obj-card fade-in"><span class="obj-number">OBJ — 01</span><div class="obj-title">Measure Vehicle Geometry</div><p class="obj-desc">Steel-tape survey of wheelbase, front track, and steering arm layout. CAD reconstruction from photographic reference in SolidWorks.</p></div>
-      <div class="obj-card fade-in"><span class="obj-number">OBJ — 02</span><div class="obj-title">Develop Ackermann Model</div><p class="obj-desc">Cotangent Ackermann formula applied to measured L and t to generate the ideal δi vs δo curve.</p></div>
-      <div class="obj-card fade-in"><span class="obj-number">OBJ — 03</span><div class="obj-title">Record Actual Steering Behaviour</div><p class="obj-desc">Smartphone inclinometers on both front hubs. 5° increment sweep from 0° to 40° outer lock. Three readings per point.</p></div>
-      <div class="obj-card fade-in"><span class="obj-number">OBJ — 04</span><div class="obj-title">Compare Theory vs Experiment</div><p class="obj-desc">Overlay measured vs ideal curves. Classify steering regime and quantify deviation across the lock range.</p></div>
-      <div class="obj-card fade-in"><span class="obj-number">OBJ — 05</span><div class="obj-title">Estimate KPI and Scrub Radius</div><p class="obj-desc">Photogrammetry + SolidWorks reconstruction to measure KPI, camber, and estimate scrub radius at the ground plane.</p></div>
-      <div class="obj-card fade-in"><span class="obj-number">OBJ — 06</span><div class="obj-title">Interpret Design Trade-offs</div><p class="obj-desc">Relate geometry findings to manual steering effort, low-speed field use, and beam-axle design constraints.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 02</span><div class="obj-title">Characterise Wheel Angle Relationship</div><p class="obj-desc">Derive the ideal δi vs δo curve from measured wheelbase and track width; quantify how the tractor's linkage deviates across the full lock range.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 03</span><div class="obj-title">Record Actual Steering Behaviour</div><p class="obj-desc">iPhone Compass feature on both front hubs. 5° increment sweep from 0° to 40° outer lock. Three readings per point.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 04</span><div class="obj-title">Compare Theory vs Experiment</div><p class="obj-desc">Overlay measured vs ideal curves. Classify the steering regime and quantify angular deviation across the lock range.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 05</span><div class="obj-title">Measure KPI, Camber &amp; Scrub Radius</div><p class="obj-desc">Photogrammetry and SolidWorks reconstruction to measure kingpin inclination, camber angle, and estimate scrub radius at the ground plane.</p></div>
+      <div class="obj-card fade-in"><span class="obj-number">OBJ — 06</span><div class="obj-title">Interpret Design Trade-offs</div><p class="obj-desc">Relate geometry findings to manual steering effort, low-speed field use, and beam-axle design constraints inherent to agricultural tractors.</p></div>
     </div>
   </div>
 </section>
@@ -507,22 +506,22 @@
 <section style="padding:80px 0; background: linear-gradient(160deg, #1a1208 0%, #211508 50%, #1a1008 100%); border-top:4px solid var(--wheat);">
   <div class="container">
     <div class="section-label" style="color:rgba(212,168,67,0.7);">Field Observation</div>
-    <h2 class="section-title" style="color:#fff;">The Behaviour Being Characterised</h2>
-    <p class="section-body" style="margin-bottom:40px; color:rgba(255,255,255,0.6);">Mahindra 265 pulling a loaded trolley through a headland turn — the exact manoeuvre this study's geometry quantifies.</p>
+    <h2 class="section-title" style="color:#fff;">The Manoeuvre Being Investigated</h2>
+    <p class="section-body" style="margin-bottom:40px; color:rgba(255,255,255,0.6);">Mahindra 265 pulling a loaded trolley through a headland turn — the exact manoeuvre this steering geometry study quantifies.</p>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;" class="fade-in">
       <!-- video left, takes same visual weight as one photo -->
       <div class="img-block">
-        <video src="Tractor_turning_gif.mp4"
+        <video src="https://res.cloudinary.com/fvtkc10l/video/upload/v1787124542/Tractor_turning_gif_ddptwg.mp4"
                autoplay loop muted playsinline
                style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:4px; border:1px solid rgba(212,168,67,0.25); display:block;">
         </video>
-        <p class="photo-caption" style="color:rgba(255,255,255,0.35);">Fig. F1 — Loaded trolley turn, field conditions · Ackermann geometry in action</p>
+        <p class="photo-caption" style="color:rgba(255,255,255,0.35);">Fig. F1 — Loaded trolley turn, field conditions · Steering geometry in action</p>
       </div>
       <!-- right side: context callout -->
       <div style="display:flex; flex-direction:column; justify-content:center; gap:20px; padding:8px 0;">
         <div class="callout-box" style="background:rgba(61,90,42,0.25); border-left:4px solid var(--wheat);">
-          <p style="color:rgba(255,255,255,0.75);">This is the manoeuvre the Ackermann condition is designed to optimise — inner wheel must steer sharper than outer to eliminate tyre scrub.</p>
+          <p style="color:rgba(255,255,255,0.75);">This is the manoeuvre the steering geometry investigation centres on — inner wheel must steer sharper than outer to eliminate tyre scrub in a tight headland turn.</p>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
           <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:16px 14px; text-align:center;">
@@ -530,11 +529,11 @@
             <div style="font-family:var(--serif); font-size:24px; color:var(--wheat);">40°</div>
           </div>
           <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:16px 14px; text-align:center;">
-            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:6px;">Ackermann</div>
-            <div style="font-family:var(--serif); font-size:18px; color:var(--wheat); line-height:1.2;">Progressive</div>
+            <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:6px;">Steering Regime</div>
+            <div style="font-family:var(--serif); font-size:18px; color:var(--wheat); line-height:1.2;">Divergent</div>
           </div>
         </div>
-        <p style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.7; font-weight:300;">At full lock, inner wheel angle falls ~4–6° short of ideal — tyre scrub is visible under loaded turn conditions exactly like this one.</p>
+        <p style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.7; font-weight:300;">At full lock, the outer wheel angle overshoots the ideal geometric requirement by ~16° — tyre scrub is visible under loaded turn conditions exactly like this one.</p>
       </div>
     </div>
   </div>
@@ -547,20 +546,21 @@
   <div class="container">
     <div class="section-label">03 — Measurement Methodology</div>
     <h2 class="section-title">How Every Parameter Was Measured</h2>
-    <p class="section-body">Three methods, no specialist lab equipment. Conducted in sequence — dimensions first, then arm angle, then steering sweep.</p>
+    <p class="section-body">Four methods, no specialist lab equipment. Conducted in sequence — dimensions first, then arm angle, then steering sweep, then camber.</p>
 
     <!-- TOOLS SUMMARY TABLE -->
     <div class="full-table-wrap fade-in" style="margin-top:40px;">
       <table class="full-table">
         <thead>
-          <tr><th>Tool</th><th>What It Measured</th><th>Used In</th><th>Accuracy</th></tr>
+          <tr><th>Tool</th><th>What It Measured</th><th>Used In</th></tr>
         </thead>
         <tbody>
-          <tr><td>Steel measuring tape</td><td>Wheelbase, track width, wheel diameters</td><td>Method 01</td><td>±1 mm</td></tr>
-          <tr><td>Chalk</td><td>Ground projection of tyre rotation centres</td><td>Method 01</td><td>—</td></tr>
-          <tr><td>Thread + stone (plumb line)</td><td>Vertical projection of steering arm pivot points</td><td>Method 02</td><td>±0.5°</td></tr>
-          <tr><td>Protractor / chalk lines</td><td>Steering arm inclination angle</td><td>Method 02</td><td>±0.5°</td></tr>
-          <tr><td>iPhone inclinometer (×2)</td><td>Inner and outer wheel steer angles</td><td>Method 03</td><td>±0.3–0.5°</td></tr>
+          <tr><td>Steel measuring tape</td><td>Wheelbase, track width, wheel diameters</td><td>Method 01</td></tr>
+          <tr><td>Chalk</td><td>Ground projection of tyre rotation centres</td><td>Method 01</td></tr>
+          <tr><td>Thread + stone (plumb line)</td><td>Vertical projection of steering arm pivot points</td><td>Method 02</td></tr>
+          <tr><td>Protractor / chalk lines</td><td>Steering arm inclination angle</td><td>Method 02</td></tr>
+          <tr><td>iPhone compass feature (×2)</td><td>Inner and outer wheel steer angles</td><td>Method 03</td></tr>
+          <tr><td>iPhone Level feature (×2)</td><td>Front wheel camber angle — both sides</td><td>Method 04</td></tr>
         </tbody>
       </table>
     </div>
@@ -576,18 +576,18 @@
         <div>
           <div class="img-grid-2" style="margin-top:0;">
             <div class="img-block">
-              <img src="side_rear_line.jpeg" alt="Chalk centrelines — rear and side projection"
+              <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787124741/side_rear_line_c6gwf3.jpg" alt="Chalk centrelines — rear and side projection"
                    style="aspect-ratio:4/3; width:100%; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
               <p class="photo-caption">Fig. 2a — Rear &amp; side: tyre centre projections for wheelbase</p>
             </div>
             <div class="img-block">
-              <img src="front_side_lines.jpeg" alt="Chalk centrelines — front projection for track width"
+              <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787125026/front_side_lines_ibk7nq.jpg" alt="Chalk centrelines — front projection for track width"
                    style="aspect-ratio:4/3; width:100%; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
               <p class="photo-caption">Fig. 2b — Front &amp; side: centrelines for track width</p>
             </div>
           </div>
           <div class="img-block" style="margin-top:12px;">
-            <video src="Measurement_gif.mp4" autoplay loop muted playsinline
+            <video src="https://res.cloudinary.com/fvtkc10l/video/upload/v1787124608/Measurement_gif_cjlect.mp4" autoplay loop muted playsinline
                    style="width:100%; border-radius:4px; border:1px solid var(--rule); display:block; max-height:52vw; object-fit:cover;"></video>
             <p class="photo-caption">Fig. 2c — Timelapse: tape measurement of wheelbase and track width</p>
           </div>
@@ -622,7 +622,7 @@
             <p class="photo-caption" style="text-align:center;">Fig. 3a — Stone + thread instrument</p>
           </div>
           <div class="img-block">
-            <img src="thread hanging to pivot point.jpeg" alt="Thread at pivot point"
+            <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787124904/thread_hanging_to_pivot_point_m0ms95.jpg" alt="Thread at pivot point"
                  style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
             <p class="photo-caption" style="text-align:center;">Fig. 3b — Thread at pivot point</p>
           </div>
@@ -631,10 +631,12 @@
                  style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
             <p class="photo-caption" style="text-align:center;">Fig. 3c — Plumb line in use</p>
           </div>
-          <div class="img-block">
-            <img src="Ground Diagram.jpeg" alt="Chalk construction on ground"
-                 style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:4px; border:1px solid var(--rule);">
-            <p class="photo-caption" style="text-align:center;">Fig. 3d — Ground projection result</p>
+          <div style="position:relative; display:inline-block; width:100%;">
+            <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787125089/Ground_Diagram_rawlv6.jpg" alt="Chalk construction on ground — Used as SolidWorks reference"
+                 style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:4px; border:2px solid var(--wheat); display:block;">
+            <!-- Badge — always visible, sits above image at all times -->
+            <div style="position:absolute; top:8px; left:8px; background:var(--wheat); color:#1a1208; font-family:var(--mono); font-size:8px; letter-spacing:0.12em; text-transform:uppercase; padding:4px 8px; border-radius:2px; font-weight:600; line-height:1.3; z-index:10; pointer-events:none; box-shadow:0 2px 8px rgba(0,0,0,0.35);">Used as SolidWorks<br>reference</div>
+            <p class="photo-caption" style="text-align:center;">Fig. 3d — Ground projection · imported into SW as sketch reference for full CAD replica</p>
           </div>
         </div>
         <div>
@@ -646,7 +648,7 @@
             </tbody>
           </table>
           <div class="callout-box" style="margin-top:20px;">
-            <p>Arm extension lines converge forward of the rear axle — confirms under-Ackermann geometry before any calculation.</p>
+            <p>Arm extension lines converge forward of the rear axle — indicating that the steering geometry produces less inner-wheel angle than the ideal differential-angle condition requires.</p>
           </div>
         </div>
       </div>
@@ -656,45 +658,19 @@
     <div style="margin-top:56px; border-top:1px solid var(--rule); padding-top:48px;" class="fade-in">
       <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
         <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-2); background:rgba(184,76,26,0.08); padding:6px 14px; border-radius:2px; white-space:nowrap;">Method 03</div>
-        <div style="font-family:var(--serif); font-size:22px; color:var(--ink); line-height:1.2;">Smartphone Inclinometer Sweep — δi vs δo</div>
+        <div style="font-family:var(--serif); font-size:22px; color:var(--ink); line-height:1.2;">Smartphone Compass Sweep — δi vs δo</div>
       </div>
-      <p style="font-size:14px; color:var(--ink-3); line-height:1.75; font-weight:300; max-width:760px; margin-bottom:28px;">Two iPhones strapped rigidly to both front hubs, zeroed at straight-ahead. Steering turned left — inner wheel driven in 5° increments, outer wheel angle read simultaneously from the second phone. Three readings per step; outliers &gt;±0.5° rejected.</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;" class="sweep-convention-grid">
-        <div style="background:var(--accent-light); border:1px solid var(--rule); border-radius:4px; padding:24px;">
-          <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Input / Output Convention</div>
-          <div style="display:grid; gap:10px; margin-bottom:20px;">
-            <div style="display:flex; gap:10px; align-items:flex-start;">
-              <div style="width:3px; min-height:14px; background:var(--accent); border-radius:2px; flex-shrink:0; margin-top:3px;"></div>
-              <p style="font-size:13px; color:var(--ink-2); line-height:1.6; font-weight:300;"><strong>Driven:</strong> Inner wheel δ<sub>i</sub> — 5° steps, steering turned left.</p>
-            </div>
-            <div style="display:flex; gap:10px; align-items:flex-start;">
-              <div style="width:3px; min-height:14px; background:var(--accent-2); border-radius:2px; flex-shrink:0; margin-top:3px;"></div>
-              <p style="font-size:13px; color:var(--ink-2); line-height:1.6; font-weight:300;"><strong>Recorded:</strong> Outer wheel δ<sub>o</sub> — second phone at each step.</p>
-            </div>
-            <div style="display:flex; gap:10px; align-items:flex-start;">
-              <div style="width:3px; min-height:14px; background:var(--gold); border-radius:2px; flex-shrink:0; margin-top:3px;"></div>
-              <p style="font-size:13px; color:var(--ink-2); line-height:1.6; font-weight:300;"><strong>Zero ref:</strong> Both phones zeroed at straight-ahead before each run.</p>
-            </div>
-          </div>
-          <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace" style="width:100%; max-width:280px; display:block; margin:0 auto;">
-            <defs><marker id="ag3" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#b8942a"/></marker></defs>
-            <rect x="90" y="40" width="100" height="90" fill="#e8eff7" stroke="#c0ccd8" stroke-width="1.5" rx="2"/>
-            <rect x="80" y="122" width="18" height="8" fill="#c8c8c0" stroke="#909088" stroke-width="1" rx="1"/>
-            <rect x="182" y="122" width="18" height="8" fill="#c8c8c0" stroke="#909088" stroke-width="1" rx="1"/>
-            <g transform="rotate(-28,102,46)"><rect x="90" y="40" width="20" height="8" fill="#3d5a2a" rx="1"/></g>
-            <g transform="rotate(-16,182,46)"><rect x="172" y="40" width="20" height="8" fill="#c8392a" rx="1"/></g>
-            <rect x="94" y="50" width="7" height="12" fill="#3d5a2a" rx="1" opacity="0.75"/>
-            <rect x="174" y="50" width="7" height="12" fill="#c8392a" rx="1" opacity="0.75"/>
-            <text x="70" y="34" fill="#3d5a2a" font-size="8" text-anchor="middle">INNER δi</text>
-            <text x="70" y="44" fill="#3d5a2a" font-size="8" text-anchor="middle">DRIVEN</text>
-            <text x="212" y="34" fill="#c8392a" font-size="8" text-anchor="middle">OUTER δo</text>
-            <text x="212" y="44" fill="#c8392a" font-size="8" text-anchor="middle">RECORDED</text>
-            <line x1="60" y1="46" x2="224" y2="46" stroke="#dcdcd8" stroke-width="1" stroke-dasharray="3,3"/>
-            <text x="140" y="41" fill="#9a9a9a" font-size="7" text-anchor="middle">ZERO REF</text>
-            <path d="M 140 138 Q 62 138 58 96" fill="none" stroke="#b8942a" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#ag3)"/>
-            <text x="110" y="153" fill="#b8942a" font-size="7" text-anchor="middle">STEER LEFT · 5° STEPS</text>
-          </svg>
-        </div>
+      <p style="font-size:14px; color:var(--ink-3); line-height:1.75; font-weight:300; max-width:760px; margin-bottom:28px;">Two iPhones strapped rigidly to both front hubs, zeroed at straight-ahead using the Compass feature. Steering turned left — inner wheel driven in 5° increments, outer wheel angle read simultaneously from the second phone. Three readings per step; outliers &gt;±0.5° rejected.</p>
+
+      <!-- Photo -->
+      <div class="img-block" style="margin-bottom:32px; max-width:380px;">
+        <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787124899/Steering_Angles_Measurements_limo5a.png"
+             alt="iPhone Compass showing 238° reading on front hub during steering sweep"
+             style="width:100%; max-height:280px; object-fit:cover; border-radius:4px; border:1px solid var(--rule); display:block;">
+        <p class="photo-caption" style="text-align:center;">Fig. 3e — iPhone Compass on hub during sweep · raw readings from both phones recorded at each 5° increment · 3 values shown; full dataset in case study</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr; gap:40px; align-items:start;" class="sweep-convention-grid">
         <div>
           <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-4); margin-bottom:12px;">Raw Measured Data</div>
           <div class="full-table-wrap" style="margin-top:0;">
@@ -706,6 +682,39 @@
             </table>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ── METHOD 04 ────────────────────────── -->
+    <div style="margin-top:56px; border-top:1px solid var(--rule); padding-top:48px;" class="fade-in">
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+        <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-2); background:rgba(184,76,26,0.08); padding:6px 14px; border-radius:2px; white-space:nowrap;">Method 04</div>
+        <div style="font-family:var(--serif); font-size:22px; color:var(--ink); line-height:1.2;">iPhone Level Feature — Front Wheel Camber Measurement</div>
+      </div>
+      <p style="font-size:14px; color:var(--ink-3); line-height:1.75; font-weight:300; max-width:760px; margin-bottom:28px;">Metal section held flush against each tyre sidewall as a reference plane. iPhone Level feature read directly off the metal. Both wheels measured independently — equal magnitude on both sides confirms the reading.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;" class="plumb-method-grid">
+
+        <div class="img-block">
+          <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787125026/Camber_Measurement_ysrevq.png"
+               alt="iPhone Level showing −3° on right front tyre and +3° on left front tyre"
+               style="width:100%; border-radius:4px; border:1px solid var(--rule); display:block; object-fit:cover;">
+          <p class="photo-caption" style="text-align:center;">Fig. 4 — iPhone Level: right tyre −3°, left tyre +3° — equal magnitude, symmetric axle</p>
+        </div>
+
+        <div>
+          <table class="data-table">
+            <thead><tr><th>Tyre</th><th>iPhone Reading</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td>Right Front</td><td style="font-family:var(--mono); color:var(--accent-2);">−3°</td><td>+3° positive camber</td></tr>
+              <tr><td>Left Front</td><td style="font-family:var(--mono); color:var(--field);">+3°</td><td>+3° positive camber</td></tr>
+            </tbody>
+          </table>
+          <div class="callout-box" style="margin-top:20px;">
+            <p>Same magnitude on both sides — sign flips because the phone is held on opposite sides of the axle. Both physically describe the same outward tilt. Measurement confirmed: <strong>+3.0° positive camber</strong>.</p>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -727,7 +736,7 @@
       <!-- ── STEP 01 ── -->
       <div class="fade-in" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
         <div class="img-block">
-          <img src="ground_projection_sld.png" alt="Ground projection of pivot points in SolidWorks"
+          <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787125087/ground__projection_sld_lfwt1l.png" alt="Ground projection of pivot points in SolidWorks"
                style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
           <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-1 — Ground projection image imported into SolidWorks as sketch reference</p>
         </div>
@@ -760,7 +769,7 @@
           </div>
         </div>
         <div class="img-block">
-          <img src="Replica_SLD_step2.png" alt="SolidWorks front tyre with camber and KPI applied"
+          <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787124731/Replica_SLD_step2_v2mjo0.png" alt="SolidWorks front tyre with camber and KPI applied"
                style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
           <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-2 — Front tyre modelled with 3° camber outward and measured KPI angle</p>
         </div>
@@ -770,7 +779,7 @@
       <!-- ── STEP 03 ── -->
       <div class="fade-in" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
         <div class="img-block">
-          <img src="Replica_SLD_step3.png" alt="SolidWorks centre axle mirrored for equal front track width"
+          <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787124732/Replica_SLD_step3_xe3ljh.png" alt="SolidWorks centre axle mirrored for equal front track width"
                style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
           <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-3 — Centre axle modelled and mirrored so front track width matches the measured value</p>
         </div>
@@ -803,7 +812,7 @@
           </div>
         </div>
         <div class="img-block">
-          <img src="Replica_SLD_step4.png" alt="SolidWorks rear tyres placed at wheelbase distance with rear track width set"
+          <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787124733/Replica_SLD_step4_arffef.png" alt="SolidWorks rear tyres placed at wheelbase distance with rear track width set"
                style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
           <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-4 — Rear tyres placed at wheelbase distance; rear track width matched to measurement</p>
         </div>
@@ -812,7 +821,7 @@
       <!-- ── STEP 05 ── -->
       <div class="fade-in" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
         <div class="img-block">
-          <img src="Replica_SLD_step5.png" alt="Basic bonnet made using surface modelling in SolidWorks"
+          <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787124736/Replica_SLD_step5_eigmyl.png" alt="Basic bonnet made using surface modelling in SolidWorks"
                style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
           <p class="photo-caption" style="color:rgba(255,255,255,0.3);">Fig. CAD-5 — Basic bonnet form built using surface modelling to complete the tractor body silhouette</p>
         </div>
@@ -850,7 +859,7 @@
           <div>
             <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(212,168,67,0.5); margin-bottom:10px;">CAD Steering Setup — Projection Lines &amp; KP Axis</div>
             <video
-              src="Steering Setup recording CAD.mp4"
+              src="https://res.cloudinary.com/fvtkc10l/video/upload/v1787124633/Steering_Setup_recording_CAD_lfo9ub.mp4"
               autoplay loop muted playsinline
               style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.35); display:block; background:#000; box-shadow: 0 0 40px rgba(212,168,67,0.1);">
             </video>
@@ -860,7 +869,7 @@
           <!-- Ground projection reference image -->
           <div>
             <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(212,168,67,0.5); margin-bottom:10px;">Ground Projection — Base Reference Image</div>
-            <img src="ground_projection_sld.png" alt="Ground projection photograph used as base reference for CAD"
+            <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787125087/ground__projection_sld_lfwt1l.png" alt="Ground projection photograph used as base reference for CAD"
                  style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.2); display:block; object-fit:contain; background:rgba(0,0,0,0.3);">
             <p class="photo-caption" style="color:rgba(255,255,255,0.3); margin-top:8px;">Fig. — Ground projection photo (camera parallel to ground) used as the import reference in SolidWorks</p>
           </div>
@@ -870,7 +879,7 @@
         <!-- Final front view full width below -->
         <div style="margin-top:24px;">
           <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(212,168,67,0.5); margin-bottom:10px;">Final Front View — All Measured Angles Confirmed</div>
-          <img src="Replica_SLD_step6.png" alt="Final front view of CAD tractor replica with all measured angles"
+          <img src="https://res.cloudinary.com/fvtkc10l/image/upload/v1787124734/Replica_SLD_step6_fi1y8k.png" alt="Final front view of CAD tractor replica with all measured angles"
                style="width:100%; max-height:420px; object-fit:contain; border-radius:4px; border:1px solid rgba(212,168,67,0.35); display:block; background:rgba(0,0,0,0.4); box-shadow: 0 0 32px rgba(212,168,67,0.12);">
           <p class="photo-caption" style="color:rgba(255,255,255,0.3); margin-top:8px;">Fig. CAD-6 — Final orthographic front view: camber, KPI, track width and scrub radius all verified</p>
         </div>
@@ -885,13 +894,6 @@
           <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:10px;">Model Validation</div>
           <div style="font-family:var(--serif); font-size:22px; color:#fff; line-height:1.25; margin-bottom:14px;">Verifying the CAD Replica Against Experimental Data</div>
           <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.8; font-weight:300; max-width:780px;">The reverse-engineered CAD model was validated by comparing CAD assembly outer wheel angles with experimentally measured steering angles across the full steering range.</p>
-        </div>
-
-        <!-- Image full width -->
-        <div style="margin-bottom:32px;">
-          <img src="Replica_Accuracy_verification.png" alt="CAD vs experimental steering angle comparison chart"
-               style="width:100%; border-radius:4px; border:1px solid rgba(212,168,67,0.25); display:block; object-fit:contain; background:rgba(0,0,0,0.35);">
-          <p class="photo-caption" style="color:rgba(255,255,255,0.3); margin-top:8px;">Fig. — CAD outer wheel angles vs experimentally measured steering angles across the steering range</p>
         </div>
 
         <!-- Result callout -->
@@ -929,106 +931,25 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     ENGINEERING INSIGHT — PACKAGING & CAMBER
-════════════════════════════════════════════ -->
-<section id="insight" style="background: linear-gradient(160deg, #1a1208 0%, #211508 50%, #1a1008 100%); border-top: 4px solid wheat;">
-  <div class="container">
-
-    <!-- Header -->
-    <div style="text-align:center; padding-bottom:48px;">
-      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:16px;">Engineering Insight</div>
-      <h2 style="font-family:var(--serif); font-size:clamp(28px,4vw,42px); color:#fff; line-height:1.2; margin-bottom:20px;">Why Camber-Out? — The Packaging Problem</h2>
-      <p style="font-size:15px; color:rgba(255,255,255,0.45); max-width:600px; margin:0 auto; line-height:1.8; font-weight:300;">A tight clearance at the kingpin top joint forced a design decision. Two solutions existed — only one preserved steering effort.</p>
-    </div>
-
-    <!-- THE PROBLEM — full width photo -->
-    <div class="fade-in" style="margin-bottom:56px;">
-      <div style="position:relative; border-radius:6px; overflow:hidden; border:1px solid rgba(212,168,67,0.25);">
-        <img src="KPI_2.jpeg" alt="Tight clearance between kingpin top joint and tyre sidewall — marked with red pen"
-             style="width:100%; max-height:520px; object-fit:cover; object-position:center top; display:block;">
-        <div style="position:absolute; bottom:0; left:0; right:0; padding:20px 24px; background:linear-gradient(transparent, rgba(10,8,4,0.92));">
-          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,168,67,0.7); margin-bottom:6px;">The Constraint</div>
-          <p style="font-size:13px; color:rgba(255,255,255,0.65); margin:0; line-height:1.6;">Red mark shows the critically tight gap between the kingpin top joint and the tyre sidewall. At 0° camber this gap closes — packaging fails.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- TWO OPTIONS — side by side -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:56px;">
-
-      <!-- OPTION A — the wrong one -->
-      <div class="fade-in" style="background:rgba(200,50,50,0.07); border:1px solid rgba(200,80,80,0.25); border-radius:6px; padding:32px; position:relative;">
-        <div style="position:absolute; top:-1px; left:32px; font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; background:#c85050; color:#fff; padding:4px 12px; border-radius:0 0 4px 4px;">Option A — Rejected</div>
-        <div style="margin-top:20px;">
-          <div style="font-family:var(--serif); font-size:19px; color:#fff; margin-bottom:12px; line-height:1.3;">Shift the Entire Wheel Outward</div>
-          <p style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.8; font-weight:300; margin-bottom:20px;">Increasing wheel offset moves the whole wheel assembly outward — the tyre clears the kingpin joint. Problem solved… or is it?</p>
-          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=70"
-               alt="Placeholder — replace with wheel offset diagram"
-               style="width:100%; border-radius:4px; aspect-ratio:16/9; object-fit:cover; margin-bottom:20px; opacity:0.6;">
-          <div style="background:rgba(200,50,50,0.15); border-left:3px solid #c85050; padding:14px 16px; border-radius:0 4px 4px 0;">
-            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#c87070; margin-bottom:6px;">The Problem</div>
-            <p style="font-size:13px; color:rgba(255,255,255,0.55); line-height:1.7; margin:0;">The contact patch centre moves outward with the wheel. The KPI axis intersection on the ground stays fixed. The distance between them — the <strong style="color:#fff;">scrub radius — increases</strong>. On a manual steering tractor with no power assist, this directly translates to heavier steering effort. <strong style="color:#c87070;">Unacceptable.</strong></p>
-          </div>
-        </div>
-      </div>
-
-      <!-- OPTION B — the chosen one -->
-      <div class="fade-in" style="background:rgba(50,180,80,0.07); border:1px solid rgba(80,200,100,0.25); border-radius:6px; padding:32px; position:relative;">
-        <div style="position:absolute; top:-1px; left:32px; font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; background:#3a9a50; color:#fff; padding:4px 12px; border-radius:0 0 4px 4px;">Option B — Chosen ✓</div>
-        <div style="margin-top:20px;">
-          <div style="font-family:var(--serif); font-size:19px; color:#fff; margin-bottom:12px; line-height:1.3;">Camber the Wheel Outward +3°</div>
-          <p style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.8; font-weight:300; margin-bottom:20px;">Tilting the wheel top outward by 3° pushes the tyre crown away from the kingpin joint — the clearance problem is solved without moving the wheel laterally.</p>
-          <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=70"
-               alt="Placeholder — replace with camber diagram"
-               style="width:100%; border-radius:4px; aspect-ratio:16/9; object-fit:cover; margin-bottom:20px; opacity:0.6;">
-          <div style="background:rgba(50,180,80,0.12); border-left:3px solid #3a9a50; padding:14px 16px; border-radius:0 4px 4px 0;">
-            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#5aba70; margin-bottom:6px;">Why It Works</div>
-            <p style="font-size:13px; color:rgba(255,255,255,0.55); line-height:1.7; margin:0;">The contact patch centre barely shifts laterally. The KPI axis intersection stays the same. Therefore <strong style="color:#fff;">scrub radius is largely unchanged</strong> — steering effort is preserved. The clearance is gained "for free" at the top of the tyre. <strong style="color:#5aba70;">Elegant.</strong></p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- KEY TAKEAWAY -->
-    <div class="fade-in" style="background:rgba(212,168,67,0.08); border:1px solid rgba(212,168,67,0.3); border-radius:6px; padding:32px 40px; text-align:center;">
-      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(212,168,67,0.6); margin-bottom:16px;">Key Takeaway</div>
-      <p style="font-family:var(--serif); font-size:18px; color:rgba(255,255,255,0.85); line-height:1.8; max-width:680px; margin:0 auto;">Camber angle rotates the tyre about the contact patch — the crown moves out, the patch stays. Wheel offset shift moves <em>everything</em> out together. That distinction is why one solution works and the other doesn't.</p>
-    </div>
-
-  </div>
-</section>
-
 <section style="background: linear-gradient(180deg, #f5f0e8 0%, #ede8de 100%);" id="setup">
   <div class="container">
     <div class="section-label">05 — Experimental Setup</div>
     <h2 class="section-title">Steering Angle Acquisition — Detail</h2>
-    <p class="section-body">Two iPhones rigidly strapped to both front hubs, zeroed at straight-ahead. Inner wheel angle driven in 5° increments; outer wheel angle recorded simultaneously. Sweep continued to full lock.</p>
+    <p class="section-body">Two iPhones rigidly strapped to both front hubs, zeroed at straight-ahead using the Compass feature. Inner wheel angle driven in 5° increments; outer wheel angle recorded simultaneously. Sweep continued to full lock.</p>
 
     <div class="rule-divider">⚙</div>
 
     <!-- THEORETICAL MODEL -->
     <div class="section-label" style="margin-top:0">06 — Theoretical Steering Model</div>
-    <h2 class="section-title">Ackermann Formulation</h2>
+    <h2 class="section-title">Ideal Wheel Angle Relationship</h2>
     <div class="geo-grid">
       <div class="fade-in">
-        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">Ideal inner wheel angle δ<sub>i</sub> as a function of outer wheel angle δ<sub>o</sub>, wheelbase L, and track t:</p>
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">The ideal inner wheel angle δ<sub>i</sub> as a function of outer wheel angle δ<sub>o</sub>, wheelbase L, and track t — derived purely from the geometry of concentric circular arcs:</p>
         <div style="background:#fff; border:1px solid var(--rule); border-radius:4px; padding:28px; margin-bottom:20px; text-align:center;">
           <div style="font-family:var(--mono); font-size:18px; color:var(--accent); letter-spacing:0.05em; line-height:2;">cot(δ<sub>i</sub>) = cot(δ<sub>o</sub>) − t / L</div>
           <div style="font-family:var(--mono); font-size:11px; color:var(--ink-4); margin-top:12px; letter-spacing:0.1em;">WHERE: L = 1905 mm &nbsp;|&nbsp; t = 1270 mm</div>
         </div>
         <p style="font-size:14px; color:var(--ink-3); line-height:1.75; font-weight:300;">The cotangent relationship is non-linear — the ideal curve progressively diverges from parallel steering as lock increases.</p>
-      </div>
-      <!-- SOLIDWORKS / GEOMETRY DIAGRAM — replace with CAD screenshot -->
-      <div class="fade-in">
-        <div class="img-block">
-          <img src="https://images.unsplash.com/photo-1581093806997-124204d9fa9d?w=700&q=80"
-               alt="SolidWorks steering arm geometry — replace with CAD screenshot"
-               style="aspect-ratio:4/3; border-radius:4px;"
-               id="img-cad-steering">
-          <p class="photo-caption">Fig. 8 — Replace with SolidWorks steering arm geometry screenshot</p>
-        </div>
       </div>
     </div>
   </div>
@@ -1041,170 +962,21 @@
   <div class="container">
     <div class="section-label">07 — Experimental Results</div>
     <h2 class="section-title">Measured Steering Data</h2>
-    <p class="section-body">Full lock range 0–40° outer. Inner wheel angles and split computed from raw inclinometer readings.</p>
+    <p class="section-body">Full lock range 0–40° inner. Outer wheel angles and split computed from raw compass readings.</p>
     <div class="full-table-wrap fade-in">
       <table class="full-table">
         <thead>
           <tr>
             <th>Test No.</th>
-            <th>Outer Wheel δo (°)</th>
-            <th>Inner Measured δi (°)</th>
-            <th>Inner Ideal δi (°)</th>
+            <th>Inner Wheel δi (°)</th>
+            <th>Outer Measured δo (°)</th>
+            <th>Outer Ideal δo (°)</th>
             <th>Steering Split Δ (°)</th>
             <th>Deviation (°)</th>
           </tr>
         </thead>
         <tbody id="results-table-body"></tbody>
       </table>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     CORRELATION ANALYSIS
-════════════════════════════════════════════ -->
-<section style="background: linear-gradient(180deg, #edf2e8 0%, #e8ede0 100%);" id="analysis">
-  <div class="container">
-    <div class="section-label">08 — Correlation Analysis</div>
-    <h2 class="section-title">Measured vs Ideal Ackermann</h2>
-    <p class="section-body">Theoretical Ackermann curve overlaid against measured inner wheel angles. Deviation increases progressively with lock.</p>
-    <div class="chart-container fade-in">
-      <div class="chart-header">
-        <div class="chart-title">Ackermann Comparison — Inner vs Outer Wheel Angle</div>
-        <div class="chart-legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#1a3a5c;"></div>Ideal Ackermann</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#c8392a;"></div>Measured</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#b8942a;"></div>Parallel Steering</div>
-        </div>
-      </div>
-      <div class="chart-wrapper"><canvas id="ackermannChart"></canvas></div>
-      <div style="margin-top:24px; display:grid; grid-template-columns: repeat(3,1fr); gap:16px;">
-        <div style="padding:16px; background:var(--paper-2); border-radius:4px; text-align:center;"><div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-4); margin-bottom:8px;">Low Lock (0–15°)</div><div style="font-family:var(--serif); font-size:16px; color:var(--ink-2);">Near-Parallel</div><div style="font-size:12px; color:var(--ink-3); margin-top:4px; font-weight:300;">Both wheels track similarly; minimal Ackermann effect</div></div>
-        <div style="padding:16px; background:var(--accent-light); border-radius:4px; text-align:center;"><div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">Mid Lock (15–28°)</div><div style="font-family:var(--serif); font-size:16px; color:var(--accent);">Progressive</div><div style="font-size:12px; color:var(--accent); margin-top:4px; font-weight:300; opacity:0.7;">Measured curve diverges progressively toward ideal</div></div>
-        <div style="padding:16px; background:var(--paper-2); border-radius:4px; text-align:center;"><div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-4); margin-bottom:8px;">High Lock (28–40°)</div><div style="font-family:var(--serif); font-size:16px; color:var(--ink-2);">Under-Ackermann</div><div style="font-size:12px; color:var(--ink-3); margin-top:4px; font-weight:300;">Measured inner angle falls short; tyre scrub at max lock</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     STEERING ARM GEOMETRY INVESTIGATION
-════════════════════════════════════════════ -->
-<section id="steering-arm">
-  <div class="container">
-    <div class="section-label">09 — Steering Arm Geometry Investigation</div>
-    <h2 class="section-title">Arm Extension &amp; Ackermann Construction</h2>
-    <p class="section-body">Extending the steering arm centrelines determines whether they converge at the rear axle — the criterion for pure Ackermann.</p>
-    <div class="geo-grid" style="margin-top:48px;">
-      <div class="fade-in">
-        <!-- STEERING ARM DIAGRAM — replace with annotated top-view photo or CAD -->
-        <div class="img-block">
-          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=700&q=80"
-               alt="Steering arm geometry — replace with annotated CAD top view"
-               style="aspect-ratio:4/3; border-radius:4px;"
-               id="img-arm-geometry">
-          <p class="photo-caption">Fig. 9 — Replace with steering arm extension / Ackermann construction diagram</p>
-        </div>
-      </div>
-      <div class="fade-in">
-        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">SolidWorks extension of the steering arm centrelines shows their intersection lies <strong>forward of the rear axle</strong> — confirming under-Ackermann geometry.</p>
-        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">The offset distance from the intersection to the rear axle directly sets the degree of under-Ackermann. Longer arms or a larger toe-in angle would shift the intersection rearward and increase Ackermann tendency.</p>
-        <div class="callout-box">
-          <p>Forward intersection → under-Ackermann. At rear axle → pure Ackermann. Behind rear axle → over-Ackermann. Mahindra 265: mild-to-moderate under-Ackermann.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     KPI AND CAMBER
-════════════════════════════════════════════ -->
-<section style="background: linear-gradient(180deg, #f5f0e8 0%, #ede8de 100%);" id="kpi">
-  <div class="container">
-    <div class="section-label">10 — KPI &amp; Camber Investigation</div>
-    <h2 class="section-title">Kingpin Inclination and Wheel Camber</h2>
-    <p class="section-body">Measured via SolidWorks photogrammetry reconstruction, cross-referenced against plumb-line reference photographs.</p>
-    <div class="kpi-grid">
-      <div class="fade-in">
-        <div class="kpi-visual">
-          <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-4); margin-bottom:8px;">Primary Result</div>
-          <div class="large-stat"><span class="large-stat-value">7.75°</span><span class="large-stat-label">Kingpin Inclination Angle (KPI)</span></div>
-          <div class="stat-row">
-            <div><span class="stat-mini-value">+3.0°</span><span class="stat-mini-label">Static Camber</span></div>
-            <div><span class="stat-mini-value">~32mm</span><span class="stat-mini-label">Est. Scrub Radius</span></div>
-          </div>
-        </div>
-        <!-- KPI MEASUREMENT IMAGE — replace with SolidWorks screenshot or plumb-line photo -->
-        <div class="img-block" style="margin-top:16px;">
-          <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=700&q=80"
-               alt="KPI measurement — replace with SolidWorks front-view screenshot"
-               style="aspect-ratio:3/2; border-radius:4px;"
-               id="img-kpi-solidworks">
-          <p class="photo-caption">Fig. 10 — Replace with SolidWorks KPI / camber measurement screenshot</p>
-        </div>
-      </div>
-      <div class="fade-in">
-        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">KPI of 7.75° is within the typical 6–10° range for agricultural tractors. Higher KPI reduces mechanical trail and scrub radius — directly lowering manual steering effort.</p>
-        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">+3.0° positive camber (top of wheel tilting outward) is standard for beam-axle tractors — it pre-loads the inner bearing against lateral field loads.</p>
-        <!-- FRONT VIEW PHOTO — replace with tractor front-view photograph showing camber -->
-        <div class="img-block">
-          <img src="https://images.unsplash.com/photo-1568667256549-094345857637?w=700&q=80"
-               alt="Tractor front view camber — replace with actual front-view photograph"
-               style="aspect-ratio:3/2; border-radius:4px;"
-               id="img-frontview">
-          <p class="photo-caption">Fig. 11 — Replace with tractor front-view photograph (camber visible)</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     SCRUB RADIUS
-════════════════════════════════════════════ -->
-<section id="scrub">
-  <div class="container">
-    <div class="section-label">11 — Scrub Radius Estimation</div>
-    <h2 class="section-title">Steering Axis Projection at Ground Plane</h2>
-    <p class="section-body">Horizontal offset between the steering axis ground intercept and tyre contact patch centre. Drives steering effort and self-centring torque.</p>
-    <div class="geo-grid" style="margin-top:48px;">
-      <div class="fade-in">
-        <!-- SCRUB RADIUS DIAGRAM — replace with annotated CAD ground plane projection -->
-        <div class="img-block">
-          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&q=80"
-               alt="Scrub radius — replace with CAD scrub radius construction diagram"
-               style="aspect-ratio:4/3; border-radius:4px;"
-               id="img-scrub">
-          <p class="photo-caption">Fig. 12 — Replace with steering axis projection / scrub radius diagram</p>
-        </div>
-      </div>
-      <div class="fade-in">
-        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">KPI 7.75° + camber +3.0° → steering axis intercepts ground inboard of contact patch. Estimated positive scrub radius: ~32 mm.</p>
-        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px; font-weight:300;">Positive scrub radius creates a moment about the steering axis under tractive/braking loads — increases steering effort, felt most in manual systems at slow field speeds.</p>
-        <div class="callout-box">
-          <p>~32 mm positive scrub radius is acceptable for a compact beam-axle manual-steering tractor at agricultural working speeds.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     ENGINEERING DISCUSSION
-════════════════════════════════════════════ -->
-<section style="background: linear-gradient(180deg, #f5f0e8 0%, #ede8de 100%);" id="discussion">
-  <div class="container">
-    <div class="section-label">12 — Engineering Discussion</div>
-    <h2 class="section-title">Design Interpretation</h2>
-    <p class="section-body">Deviations observed are consistent with known production vehicle steering trade-offs.</p>
-    <div class="discussion-grid fade-in">
-      <div class="disc-item"><div class="disc-title">Packaging Constraints</div><p class="disc-desc">Pure Ackermann requires arms to converge at the rear axle — geometrically impractical in a compact beam-axle layout without sacrificing ground clearance or structural stiffness.</p></div>
-      <div class="disc-item"><div class="disc-title">Manufacturing Tolerance</div><p class="disc-desc">Casting tolerances in arm and axle geometry introduce systematic angular offsets. Acceptable for an off-highway vehicle with no high-speed steering demands.</p></div>
-      <div class="disc-item"><div class="disc-title">Agricultural Operating Regime</div><p class="disc-desc">At field working speeds on soft soil, slip angle effects dominate over kinematic Ackermann deviation — reducing its practical significance considerably.</p></div>
-      <div class="disc-item"><div class="disc-title">Steering Effort — Manual System</div><p class="disc-desc">Manual steering system. Positive scrub radius increases effort at lock but improves self-centring. KPI and camber tuned as a deliberate compromise between the two.</p></div>
-      <div class="disc-item"><div class="disc-title">Positive Camber Implications</div><p class="disc-desc">Positive camber pre-loads the outer bearing in straight running and partially unloads it in turns — suitable for field conditions where tyre wear rate is low.</p></div>
-      <div class="disc-item"><div class="disc-title">Progressive Ackermann Tendency</div><p class="disc-desc">Near-parallel at low lock → approaches ideal at mid-range → under-Ackermann at full lock. Geometry appears optimised for headland turns, not maximum lock manoeuvres.</p></div>
     </div>
   </div>
 </section>
@@ -1220,7 +992,6 @@
       <div class="error-item"><div class="error-icon">📐</div><div><div class="error-title">Smartphone Sensor Accuracy</div><p class="error-desc">Consumer MEMS accelerometers: ±0.3–0.5° resolution. Averaging reduces random error but leaves an irreducible ±0.5° uncertainty band on all reported angles.</p></div></div>
       <div class="error-item"><div class="error-icon">📷</div><div><div class="error-title">Photogrammetry Assumptions</div><p class="error-desc">CAD reconstruction assumes perpendicular camera alignment and zero lens distortion. Perspective error contributes ~±0.5° to KPI measurement.</p></div></div>
       <div class="error-item"><div class="error-icon">🔄</div><div><div class="error-title">Tyre Deformation Effects</div><p class="error-desc">Sidewall deformation under load alters apparent wheel plane orientation. High-aspect-ratio agricultural tyres can contribute up to ±1° apparent camber variation.</p></div></div>
-      <div class="error-item"><div class="error-icon">⚙️</div><div><div class="error-title">Steering Linkage Compliance</div><p class="error-desc">Wear in drag link, tie rod ends, and kingpin bearings introduces non-systematic lash — cannot be corrected by averaging alone.</p></div></div>
     </div>
   </div>
 </section>
@@ -1233,10 +1004,10 @@
     <div class="section-label">14 — Key Findings</div>
     <h2 class="section-title">Engineering Summary</h2>
     <div class="findings-grid">
-      <div class="finding-card fade-in"><div class="finding-icon">🔄</div><div class="finding-title">Steering Behaviour Classification</div><span class="finding-value">Progressive</span><p class="finding-desc">Near-parallel at low lock → progressive Ackermann tendency at mid-range → under-Ackermann at full lock. Consistent with arm geometry not converging at the rear axle.</p></div>
-      <div class="finding-card warn fade-in"><div class="finding-icon">📐</div><div class="finding-title">Ackermann Deviation at Max Lock</div><span class="finding-value">~4–6°</span><p class="finding-desc">At 40° outer lock, measured inner angle is ~4–6° below ideal — indicating lateral tyre scrub during tight manoeuvres.</p></div>
-      <div class="finding-card fade-in"><div class="finding-icon">📏</div><div class="finding-title">Kingpin Inclination</div><span class="finding-value">7.75°</span><p class="finding-desc">Within the 6–10° agricultural tractor range. Provides self-centring torque without excessive steering effort at field working speeds.</p></div>
-      <div class="finding-card alert fade-in"><div class="finding-icon">🔺</div><div class="finding-title">Positive Camber</div><span class="finding-value">+3.0°</span><p class="finding-desc">Typical for beam-axle tractors. Combined with KPI, produces ~32 mm positive scrub radius — increases manual steering effort at low speed.</p></div>
+      <div class="finding-card fade-in"><div class="finding-icon">🔄</div><div class="finding-title">Steering Behaviour Classification</div><span class="finding-value">Divergent</span><p class="finding-desc">Near-ideal at low lock → outer wheel angle increasingly overshoots the geometric requirement as lock increases → ~16° excess at full lock. Consistent with steering arm convergence point forward of the rear axle.</p></div>
+      <div class="finding-card warn fade-in"><div class="finding-icon">📐</div><div class="finding-title">Angular Deviation at Max Lock</div><span class="finding-value">~16°</span><p class="finding-desc">At 40° inner lock, the measured outer wheel angle exceeds the geometric ideal by ~16° — producing lateral tyre scrub during tight headland manoeuvres.</p></div>
+      <div class="finding-card fade-in"><div class="finding-icon">📏</div><div class="finding-title">Kingpin Inclination</div><span class="finding-value">7.75°</span><p class="finding-desc">Within the 6–10° agricultural tractor range. Provides self-centring torque and reduces scrub radius without demanding excessive steering effort at field working speeds.</p></div>
+      <div class="finding-card alert fade-in"><div class="finding-icon">🔺</div><div class="finding-title">Positive Camber</div><span class="finding-value">+3.0°</span><p class="finding-desc">Typical for beam-axle tractors. Combined with KPI of 7.75°, produces ~32 mm positive scrub radius — increases manual steering effort at low speed, offset by self-centring benefit.</p></div>
     </div>
   </div>
 </section>
@@ -1257,7 +1028,7 @@
       <span class="skill-tag">CAD-Based Measurement</span>
       <span class="skill-tag">Engineering Investigation</span>
       <span class="skill-tag">Technical Reporting</span>
-      <span class="skill-tag">Ackermann Modelling</span>
+      <span class="skill-tag">Wheel Angle Analysis</span>
       <span class="skill-tag">Photogrammetry</span>
       <span class="skill-tag">Measurement Uncertainty</span>
       <span class="skill-tag">SolidWorks</span>
@@ -1274,14 +1045,15 @@
   <div class="container">
     <div class="section-label">16 — Engineering Conclusion</div>
     <h2 class="section-title">Summary of Findings</h2>
-    <p class="conclusion-text">Steering geometry of the <span class="conclusion-highlight">Mahindra 265 (2012)</span> was characterised through dimensional survey, SolidWorks photogrammetry, and smartphone inclinometer field tests.</p>
-    <p class="conclusion-text">Theoretical model (L=<span class="conclusion-highlight">1905 mm</span>, t=<span class="conclusion-highlight">1270 mm</span>) vs measured data reveals a <span class="conclusion-highlight">progressive Ackermann tendency</span> — near-parallel at low lock, approaching ideal at mid-range, and ~<span class="conclusion-highlight">4–6° under-Ackermann</span> at full lock.</p>
-    <p class="conclusion-text">KPI <span class="conclusion-highlight">7.75°</span>, camber <span class="conclusion-highlight">+3.0°</span>, estimated scrub radius ~32 mm. Deviations from pure Ackermann are consistent with beam-axle packaging constraints and are well-suited to low-speed, high-slip field operation.</p>
+    <p class="conclusion-text">Steering geometry of the <span class="conclusion-highlight">Mahindra 265 (2012)</span> was fully characterised through dimensional survey, SolidWorks photogrammetry reconstruction, and smartphone compass field measurements across the complete lock range.</p>
+    <p class="conclusion-text">The inner-to-outer wheel angle relationship (L=<span class="conclusion-highlight">1905 mm</span>, t=<span class="conclusion-highlight">1270 mm</span>) is divergent — near-ideal at low lock, with the outer wheel angle increasingly overshooting the geometric requirement as lock increases, reaching a ~<span class="conclusion-highlight">16° excess</span> at full lock, consistent with the steering arm convergence point lying forward of the rear axle.</p>
+    <p class="conclusion-text">KPI <span class="conclusion-highlight">7.75°</span>, camber <span class="conclusion-highlight">+3.0°</span>, estimated scrub radius ~32 mm. The full geometry package is well-suited to low-speed, high-slip agricultural field operation and is consistent with the beam-axle packaging constraints of production tractor design.</p>
+    <p style="font-family:var(--mono); font-size:12px; letter-spacing:0.08em; color:var(--wheat); margin-top:32px; padding-top:20px; border-top:1px solid rgba(212,168,67,0.3);">This study is to be continued — next up: graph comparison and Ackermann percentage of the steering system.</p>
   </div>
 </section>
 
 <footer>
-  <p>Vehicle Dynamics Case Study — Mahindra 265 Steering Geometry Characterisation &nbsp;|&nbsp; Engineering Portfolio</p>
+  <p>Vehicle Dynamics Case Study — Mahindra 265 Steering Geometry Investigation &nbsp;|&nbsp; Engineering Portfolio</p>
 </footer>
 
 <!-- LIGHTBOX -->
@@ -1298,22 +1070,22 @@
 <script>
 // ─── DATA ───────────────────────────────────────────────────────────────
 const L = 1905, t = 1270;
-function idealInner(outerDeg) {
-  const outerRad = outerDeg * Math.PI / 180;
-  const cotInner = (1 / Math.tan(outerRad)) - (t / L);
-  const innerRad = Math.atan(1 / cotInner);
-  return innerRad * 180 / Math.PI;
+function idealOuter(innerDeg) {
+  const innerRad = innerDeg * Math.PI / 180;
+  const cotOuter = (1 / Math.tan(innerRad)) + (t / L);
+  const outerRad = Math.atan(1 / cotOuter);
+  return outerRad * 180 / Math.PI;
 }
-const outerAngles  = [0, 5, 10, 15, 20, 25, 30, 35, 40];
-const measuredInner = [0, 5.3, 10.9, 16.8, 23.1, 29.5, 35.4, 40.2, 44.1];
-const idealInnerArr = outerAngles.map(a => a === 0 ? 0 : idealInner(a));
-const parallelLine  = outerAngles.map(a => a);
+const innerAngles   = [0, 5, 10, 15, 20, 25, 30, 35, 40];
+const measuredOuter  = [0, 5.3, 10.9, 16.8, 23.1, 29.5, 35.4, 40.2, 44.1];
+const idealOuterArr = innerAngles.map(a => a === 0 ? 0 : idealOuter(a));
+const parallelLine   = innerAngles.map(a => a);
 
 // ─── METHOD 03 TABLE ─────────────────────────────────────────────────────
 const m3body = document.getElementById('method3-table-body');
 if (m3body) {
-  outerAngles.forEach((outer, i) => {
-    const inner = measuredInner[i];
+  innerAngles.forEach((inner, i) => {
+    const outer = measuredOuter[i];
     const split = (inner - outer).toFixed(1);
     m3body.innerHTML += `<tr>
       <td>${String(i+1).padStart(2,'0')}</td>
@@ -1326,45 +1098,20 @@ if (m3body) {
 
 // ─── TABLE ───────────────────────────────────────────────────────────────
 const tbody = document.getElementById('results-table-body');
-outerAngles.forEach((outer, i) => {
-  const measured = measuredInner[i];
-  const ideal = idealInnerArr[i];
-  const split = measured - outer;
+innerAngles.forEach((inner, i) => {
+  const measured = measuredOuter[i];
+  const ideal = idealOuterArr[i];
+  const split = inner - measured;
   const deviation = measured - ideal;
   const hi = Math.abs(deviation) > 2;
   tbody.innerHTML += `<tr>
     <td>${String(i+1).padStart(2,'0')}</td>
-    <td>${outer.toFixed(1)}</td>
+    <td>${inner.toFixed(1)}</td>
     <td class="${hi?'highlight':''}">${measured.toFixed(1)}</td>
     <td>${ideal.toFixed(1)}</td>
     <td>${split.toFixed(1)}</td>
     <td class="${hi?'highlight':''}">${(deviation>=0?'+':'')+deviation.toFixed(1)}</td>
   </tr>`;
-});
-
-// ─── CHART ───────────────────────────────────────────────────────────────
-const ctx = document.getElementById('ackermannChart').getContext('2d');
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: outerAngles,
-    datasets: [
-      { label: 'Ideal Ackermann', data: idealInnerArr, borderColor: '#1a3a5c', backgroundColor: 'rgba(26,58,92,0.05)', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#1a3a5c', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.3, fill: false },
-      { label: 'Measured', data: measuredInner, borderColor: '#c8392a', borderDash: [6,4], backgroundColor: 'rgba(200,57,42,0.05)', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#c8392a', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.3, fill: false },
-      { label: 'Parallel', data: parallelLine, borderColor: '#b8942a', borderDash: [3,5], borderWidth: 1.5, pointRadius: 0, tension: 0.1, fill: false }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { backgroundColor: '#fff', titleColor: '#0d0d0d', bodyColor: '#5a5a5a', borderColor: '#dcdcd8', borderWidth: 1, padding: 12, titleFont: { family: 'DM Mono', size: 11 }, bodyFont: { family: 'DM Sans', size: 12, weight: 300 }, callbacks: { title: items => `Outer Wheel: ${items[0].label}°`, label: item => `${item.dataset.label}: ${item.raw.toFixed(1)}°` } }
-    },
-    scales: {
-      x: { title: { display: true, text: 'OUTER WHEEL ANGLE  δo  (°)', color: '#9a9a9a', font: { family: 'DM Mono', size: 10 }, padding: { top: 10 } }, ticks: { color: '#9a9a9a', font: { family: 'DM Mono', size: 10 }, callback: v => v + '°' }, grid: { color: '#f0f0ec' } },
-      y: { title: { display: true, text: 'INNER WHEEL ANGLE  δi  (°)', color: '#9a9a9a', font: { family: 'DM Mono', size: 10 }, padding: { bottom: 10 } }, ticks: { color: '#9a9a9a', font: { family: 'DM Mono', size: 10 }, callback: v => v + '°' }, grid: { color: '#f0f0ec' }, min: 0, max: 60 }
-    }
-  }
 });
 
 // ─── SCROLL ANIMATIONS ───────────────────────────────────────────────────
@@ -1418,7 +1165,8 @@ function buildLbList() {
     return {
       src: img.src,
       alt: img.alt,
-      caption: captionFromSibling || captionFromContainer || img.alt
+      caption: captionFromSibling || captionFromContainer || img.alt,
+      badge: img.alt && img.alt.toLowerCase().includes('solidworks') ? '⭐ Used as SolidWorks Reference' : null
     };
   });
 }
@@ -1427,7 +1175,10 @@ function openLb(index) {
   lbCurrent = index;
   lbImg.src = lbImages[index].src;
   lbImg.alt = lbImages[index].alt;
-  lbCap.textContent = lbImages[index].caption;
+  const entry = lbImages[index];
+  lbCap.innerHTML = entry.badge
+    ? `<span style="display:inline-block;background:var(--wheat);color:#1a1208;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;font-weight:600;margin-bottom:6px;">${entry.badge}</span><br>${entry.caption}`
+    : entry.caption;
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
   updateNavButtons();
@@ -1448,7 +1199,10 @@ function navigate(dir) {
   lbCurrent = Math.max(0, Math.min(lbImages.length - 1, lbCurrent + dir));
   lbImg.src = lbImages[lbCurrent].src;
   lbImg.alt = lbImages[lbCurrent].alt;
-  lbCap.textContent = lbImages[lbCurrent].caption;
+  const entry = lbImages[lbCurrent];
+  lbCap.innerHTML = entry.badge
+    ? `<span style="display:inline-block;background:var(--wheat);color:#1a1208;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;font-weight:600;margin-bottom:6px;">${entry.badge}</span><br>${entry.caption}`
+    : entry.caption;
   updateNavButtons();
 }
 
